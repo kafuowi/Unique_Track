@@ -10,12 +10,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_join.*
 import org.w3c.dom.Text
 
 class RegisterActivity : AppCompatActivity() {
     private var auth : FirebaseAuth? = null
+    private var firestore : FirebaseFirestore? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,9 +27,8 @@ class RegisterActivity : AppCompatActivity() {
         val join_button = findViewById<Button>(R.id.join_button)
         join_button.setOnClickListener {
             createAccount(editTextTextPersonName2.text.toString(),
-            editTextTextPassword.text.toString())
+                editTextTextPassword.text.toString())
         }
-
     }
 
     // 계정 생성
@@ -41,7 +42,7 @@ class RegisterActivity : AppCompatActivity() {
                             this, "계정 생성 완료.",
                             Toast.LENGTH_SHORT
                         ).show()
-                        val user = auth?.currentUser
+                        var user = auth?.currentUser
                         finish() // 가입창 종료
                     } else {
                         Toast.makeText(
@@ -50,7 +51,9 @@ class RegisterActivity : AppCompatActivity() {
                         ).show()
                     }
                 }
+
         }
+
     }
 
 }
