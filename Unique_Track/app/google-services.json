@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "174108156327",
+    "project_id": "unique-track-f112a",
+    "storage_bucket": "unique-track-f112a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:174108156327:android:bdae1bac0afeec9c495682",
+        "android_client_info": {
+          "package_name": "com.company.uniquetrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "174108156327-s59uad1qsclfibp38g6jtu2h58rm4tql.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbDxiO7wKhNjBTAwRpbv7e4y-4YF24heo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "174108156327-s59uad1qsclfibp38g6jtu2h58rm4tql.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:174108156327:android:60da1cffe8d54284495682",
+        "android_client_info": {
+          "package_name": "org.techtown.unique_track"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "174108156327-s59uad1qsclfibp38g6jtu2h58rm4tql.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbDxiO7wKhNjBTAwRpbv7e4y-4YF24heo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "174108156327-s59uad1qsclfibp38g6jtu2h58rm4tql.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
