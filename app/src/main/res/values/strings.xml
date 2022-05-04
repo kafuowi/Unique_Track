@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">UniqueTrack</string>
+    <string name="unique_track">UNIQUE TRACK</string>
+    <string name="id">ID</string>
+    <string name="pw">PW</string>
+    <string name="pw_input">패스워드를 입력하시오</string>
+    <string name="id_in">ID_input</string>
+    <string name="id_input">아이디를 입력하시오</string>
+    <string name="login">LOGIN</string>
+    <string name="join">JOIN</string>
+    <string name="social_login">소셜로그인</string>
+</resources>
