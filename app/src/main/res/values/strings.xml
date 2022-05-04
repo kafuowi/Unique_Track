@@ -9,4 +9,8 @@
     <string name="login">LOGIN</string>
     <string name="join">JOIN</string>
     <string name="social_login">소셜로그인</string>
+    <string name="logout">LOGOUT</string>
+    <string name="change_password">CHANGE PASSWORD</string>
+    <string name="user">USER</string>
+    <string name="user_button">USER</string>
 </resources>
