@@ -47,10 +47,16 @@ class MainActivity : AppCompatActivity() {
             alertDialog.show()
         }
 
-        //사용자 정보 확인 창으로
+        //사용자 정보 확인 창으로 이동
         val user_button =findViewById<Button>(R.id.user_button)
         user_button.setOnClickListener{
             startActivity(Intent(this@MainActivity,UserActivity::class.java))
+        }
+
+        //제품 목록 창으로 이동
+        val list_button = findViewById<Button>(R.id.itemlist_button)
+        list_button.setOnClickListener{
+            startActivity(Intent(this@MainActivity,ListActivity::class.java))
         }
     }
 

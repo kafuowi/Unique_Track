@@ -15,4 +15,7 @@
     <string name="user_button">USER</string>
     <string name="itemregister_button">제품 등록</string>
     <string name="itemlist_button">제품 목록</string>
+    <string name="itemtransfer_button">제품 양도</string>
+    <string name="item_content">Item</string>
+    <string name="list">| List</string>
 </resources>
