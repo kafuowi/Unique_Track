@@ -18,4 +18,13 @@
     <string name="itemtransfer_button">제품 양도</string>
     <string name="item_content">Item</string>
     <string name="list">| List</string>
+
+    <!-- recyclerview를 위한 데이터 -->
+    <string name="item1">[노리개] 북 5호 노리개</string>
+    <string name="item2">[그림] Another Chance</string>
+    <string name="item3">[기타] 깁슨 레스폴 스탠다드 트레디셔널</string>
+    <string name="date1">2021-11-12</string>
+    <string name="date2">2022-02-01</string>
+    <string name="date3">2022-03-05</string>
+
 </resources>
