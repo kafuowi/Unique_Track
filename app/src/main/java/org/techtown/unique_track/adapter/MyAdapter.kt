@@ -7,19 +7,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import org.techtown.unique_track.R
 import org.techtown.unique_track.model.ItemData
 
 //Adapter 클래스 생성
-class MyAdapter(val context : Context, val dataset: List<ItemData>):RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+class MyAdapter(private val context : Context, private val dataset: List<ItemData>):RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
     //ViewHolder 생성
     class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view){
-        //item.xml에서 정의한 ID item_name, item_date, item_imaage를 사용하여 뷰를 할당
-        val textView1 : TextView = view.findViewById(R.id.item_name)
-        val textView2 : TextView = view.findViewById(R.id.item_date)
-        val imageView : ImageView = view.findViewById(R.id.item_image)
+        //item.xml에서 정의한 ID item_name을 사용하여 뷰를 할당
+        val textView : TextView = view.findViewById(R.id.Item_name)
+        val imageView : ImageView =view.findViewById(R.id.item_image)
     }
 
     /* onCreateViewHolder() : 두 매개변수(parent, viewType)를 사용해 ViewHolder를 반환
@@ -31,14 +29,12 @@ class MyAdapter(val context : Context, val dataset: List<ItemData>):RecyclerView
         return ViewHolder(adapterLayout)
     }
 
-    //onBindViewHolder() : view와 실제 데이터 연결
+    //onBindViewHolder() : 위치를 기반으로 dataset에서 올바른 ItemData 객체를 찾음
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.textView1.text = dataset[position].itemName   //item_name
-        holder.textView2.text = dataset[position].date       //item_date
-        holder.apply{
-            Glide.with(context).load(dataset[position].imgurl)
-                .into(imageView)
-        }
+        val item = dataset[position]
+        holder.textView.text=context.resources.getString(item.stringResourceId1)    // item_name
+        holder.textView.text=context.resources.getString(item.stringResourceId2)    // item_date
+        holder.imageView.setImageResource(item.imageResourceId)                     // item_image
     }
 
     //getItemCount() : dataset의 크기를 반환

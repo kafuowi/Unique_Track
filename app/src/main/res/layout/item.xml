@@ -45,7 +45,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/item_name"
+                    android:id="@+id/Item_name"
                     android:layout_width="match_parent"
                     android:layout_height="43dp"
                     android:text="TextView" />
