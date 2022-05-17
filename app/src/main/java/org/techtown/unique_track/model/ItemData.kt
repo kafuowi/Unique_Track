@@ -1,10 +1,8 @@
 package org.techtown.unique_track.model
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
-
+/* recyclerview 데이터 형식 - realtime database의 키와 변수의 이름이 같아야함 */
 data class ItemData(
-    @StringRes val stringResourceId1 : Int,
-    @StringRes val stringResourceId2 : Int,
-    @DrawableRes val imageResourceId : Int) {
-}
+    val ProductName:String ?= null,
+    val RegisterDate:String ?= null,
+    val Image:String ?= null
+)
