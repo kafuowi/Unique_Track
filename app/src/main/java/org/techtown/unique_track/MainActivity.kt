@@ -58,6 +58,11 @@ class MainActivity : AppCompatActivity() {
         list_button.setOnClickListener{
             startActivity(Intent(this@MainActivity,ListActivity::class.java))
         }
+
+        val check_button = findViewById<Button>(R.id.itemcheck_button)
+        check_button.setOnClickListener{
+            startActivity(Intent(this@MainActivity,NFCActivity::class.java))
+        }
     }
 
     fun changePassword(password:String){
