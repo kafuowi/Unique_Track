@@ -58,10 +58,15 @@ class MainActivity : AppCompatActivity() {
         list_button.setOnClickListener{
             startActivity(Intent(this@MainActivity,ListActivity::class.java))
         }
-
+        //제품 조회
         val check_button = findViewById<Button>(R.id.itemcheck_button)
         check_button.setOnClickListener{
             startActivity(Intent(this@MainActivity,NFCActivity::class.java))
+        }
+        //제품 등록
+        val newItem_button = findViewById<Button>(R.id.itemregister_button)
+        newItem_button.setOnClickListener {
+            startActivity(Intent(this@MainActivity,NewNFCActivity::class.java))
         }
     }
 
