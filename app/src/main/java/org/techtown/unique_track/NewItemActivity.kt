@@ -57,7 +57,7 @@ class NewItemActivity : AppCompatActivity() {
     }
     fun writeNewProduct(Explanation: String?,Image: String?,OwnerName: String?,OwnerUID: String?,ProductName: String?,RegisterDate: String?) {
         val product = Product(Explanation,Image,OwnerName,OwnerUID,ProductName,RegisterDate)
-        NFCcode?.let { database.child("Products").child(it).setValue(product) }
+        NFCcode?.let { database.child("products").child(it).setValue(product) }
     }
 
 }
