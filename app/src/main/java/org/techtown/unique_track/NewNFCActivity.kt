@@ -130,6 +130,7 @@ class NewNFCActivity : AppCompatActivity() {
 
             newintent.putExtra("NFCcode",nfcTagSerialNum)
             startActivity(newintent)
+            finish()
 
             //logMessage("UID:",ByteArrayToHexString())
         }
