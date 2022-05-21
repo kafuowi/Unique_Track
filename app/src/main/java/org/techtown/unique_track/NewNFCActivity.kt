@@ -117,12 +117,20 @@ class NewNFCActivity : AppCompatActivity() {
             val extraID = tagFromIntent.id
 
             val sb = StringBuilder()
+            var laststr : String?
             for (b in extraID) {
                 sb.append(String.format("%02X", b))
             }
 
+
+
             val nfcTagSerialNum = sb.toString()
             logMessage("nfc ID", nfcTagSerialNum)
+            val newintent = Intent(this@NewNFCActivity, NewItemActivity::class.java)
+
+            newintent.putExtra("NFCcode",nfcTagSerialNum)
+            startActivity(newintent)
+
             //logMessage("UID:",ByteArrayToHexString())
         }
         // If we got an intent while the app is running, also check if it's a new NDEF message
