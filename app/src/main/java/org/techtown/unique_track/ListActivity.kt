@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
+import com.google.firebase.database.DatabaseReference
 import org.techtown.unique_track.adapter.MyAdapter
 import org.techtown.unique_track.model.ItemData
 
@@ -40,7 +41,9 @@ class ListActivity : AppCompatActivity() {
                 if(snapshot.exists()){
                     for(itemSnapshot in snapshot.children){
                         val item_list=itemSnapshot.getValue(ItemData::class.java)
-                        myDataset.add(item_list!!)
+                        // 현재 사용자의 uid와 firebase의 item_list의 ownerUID가 같을때만 myDataset에 데이터 추가
+                        if(uid==item_list!!.ownerUID)
+                            myDataset.add(item_list!!)
                     }
                     // recyclerview의 adapter로
                     recyclerView.adapter=MyAdapter(myDataset)

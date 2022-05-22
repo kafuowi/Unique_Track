@@ -4,5 +4,6 @@ package org.techtown.unique_track.model
 data class ItemData(
     val productName:String ?= null,
     val registerDate:String ?= null,
-    val image:String ?= null
+    val image:String ?= null,
+    val ownerUID:String ?= null
 )

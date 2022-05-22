@@ -16,8 +16,14 @@
     <string name="itemregister_button">제품 등록</string>
     <string name="itemlist_button">제품 목록</string>
     <string name="itemtransfer_button">제품 양도</string>
+    <string name="itemcheck_button">제품 조회</string>
     <string name="item_content">Item</string>
     <string name="list">| List</string>
+    <string name="nfc_title_text">NFC 태그를 갖다대세요</string>
     <string name="web_client_id">174108156327-s59uad1qsclfibp38g6jtu2h58rm4tql.apps.googleusercontent.com</string>
+
+    <string name="explanation_hint">제품설명</string>
+    <string name="owner_name_hint">소유자이름</string>
+    <string name="product_name_hint">제품이름</string>
 
 </resources>

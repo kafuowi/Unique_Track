@@ -51,7 +51,8 @@ class UserActivity : AppCompatActivity() {
             //val emailVerified = user.isEmailVerified
 
             // The user's ID, unique to the Firebase project
-            val uid=user.uid
+            //MainActivity에서 전역변수로 uid 선언
+            uid=user.uid
 
             //사용자 정보 출력
             val user_info=findViewById<TextView>(R.id.user_info)
@@ -71,7 +72,8 @@ class UserActivity : AppCompatActivity() {
                 val providerId = profile.providerId
 
                 // UID specific to the provider
-                val uid = profile.uid
+                //MainActivity에서 전역변수로 uid 선언
+                uid = profile.uid
 
                 // Name, email address
                 val name = profile.displayName
