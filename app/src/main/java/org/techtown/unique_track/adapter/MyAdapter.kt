@@ -36,13 +36,13 @@ class MyAdapter(private val dataset: ArrayList<ItemData>):RecyclerView.Adapter<M
     //onBindViewHolder() : 위치를 기반으로 dataset에서 올바른 ItemData 객체를 찾음
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = dataset[position]
-        holder.textView1.text=item.ProductName      // item_name
-        holder.textView2.text=item.RegisterDate     // item_date
+        holder.textView1.text=item.productName      // item_name
+        holder.textView2.text=item.registerDate     // item_date
 
         //image url -> image
         holder.apply{
             Glide.with(imageView.context)                //view,fragement,activity로 부터 context 가져옴
-                .load(item.Image)       //
+                .load(item.image)       //
                 .into(imageView)        //이미지를 보여줄 view 지정
         }                                           // item_image
     }

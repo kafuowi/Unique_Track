@@ -28,7 +28,6 @@ class ListActivity : AppCompatActivity() {
         loadItemData()
 
         /* 제품정보페이지창으로 이동 - 제품정보페이지 만들고 연결해주기 ******************** */
-        // ...
 
     }
     // firebase의 realtime database에서 데이터를 가져와 myDataset에 저장
