@@ -77,13 +77,13 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemregister_button"
-        app:layout_constraintVertical_bias="0.13" />
+        app:layout_constraintVertical_bias="0.136" />
 
     <Button
-        android:id="@+id/itemtransfer_button"
+        android:id="@+id/itemcheck_button"
         android:layout_width="220dp"
         android:layout_height="110dp"
-        android:text="@string/itemtransfer_button"
+        android:text="@string/itemcheck_button"
         android:textSize="24sp"
         app:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -91,6 +91,6 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemlist_button"
-        app:layout_constraintVertical_bias="0.231" />
+        app:layout_constraintVertical_bias="0.233" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

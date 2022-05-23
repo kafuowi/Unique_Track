@@ -15,6 +15,9 @@ import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
 
+//현재 사용자의 uid 전역변수로 선언
+var uid:String?=null
+
 class MainActivity : AppCompatActivity() {
     private var auth : FirebaseAuth? = null
 
@@ -22,6 +25,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         auth = Firebase.auth
+
+        //firebase에서 현재 uid 받아옴 (main창에 들어가면 바로 구할 수 있게)
+        val user = Firebase.auth.currentUser
+        //이메일 회원가입시에 해당하는 uid
+        uid=user.uid
 
         // 로그아웃
         val logoutbutton = findViewById<Button>(R.id.logout_button)
@@ -57,6 +65,16 @@ class MainActivity : AppCompatActivity() {
         val list_button = findViewById<Button>(R.id.itemlist_button)
         list_button.setOnClickListener{
             startActivity(Intent(this@MainActivity,ListActivity::class.java))
+        }
+        //제품 조회
+        val check_button = findViewById<Button>(R.id.itemcheck_button)
+        check_button.setOnClickListener{
+            startActivity(Intent(this@MainActivity,NFCActivity::class.java))
+        }
+        //제품 등록
+        val newItem_button = findViewById<Button>(R.id.itemregister_button)
+        newItem_button.setOnClickListener {
+            startActivity(Intent(this@MainActivity,NewNFCActivity::class.java))
         }
     }
 
