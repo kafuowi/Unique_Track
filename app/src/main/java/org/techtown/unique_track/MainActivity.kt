@@ -1,0 +1,95 @@
+package org.techtown.unique_track
+
+import android.content.Intent
+import android.app.AlertDialog
+import android.net.Uri
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.text.method.PasswordTransformationMethod
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_main.*
+
+//현재 사용자의 uid 전역변수로 선언
+var uid:String?=null
+
+class MainActivity : AppCompatActivity() {
+    private var auth : FirebaseAuth? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        auth = Firebase.auth
+
+        //firebase에서 현재 uid 받아옴 (main창에 들어가면 바로 구할 수 있게)
+        val user = Firebase.auth.currentUser
+        //이메일 회원가입시에 해당하는 uid
+        uid=user.uid
+
+        // 로그아웃
+        val logoutbutton = findViewById<Button>(R.id.logout_button)
+        logoutbutton.setOnClickListener {
+            // 로그인 화면으로
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+            auth?.signOut()
+        }
+
+        //비밀번호 재설정
+        val changepwdbutton = findViewById<Button>(R.id.changepwd_button)
+        changepwdbutton.setOnClickListener {
+            var editTextNewPassword = EditText(this)
+            editTextNewPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+            var alertDialog = AlertDialog.Builder(this)
+            alertDialog.setTitle("패스워드 변경")
+            alertDialog.setMessage("변경하고 싶은 패스워드를 입력하세요")
+            alertDialog.setView(editTextNewPassword)
+            alertDialog.setPositiveButton("변경", {dialogInterface, i -> changePassword(editTextNewPassword.text.toString()) })
+            alertDialog.setNegativeButton("취소", {dialogInterface, i -> dialogInterface.dismiss() })
+            alertDialog.show()
+        }
+
+        //사용자 정보 확인 창으로 이동
+        val user_button =findViewById<Button>(R.id.user_button)
+        user_button.setOnClickListener{
+            startActivity(Intent(this@MainActivity,UserActivity::class.java))
+        }
+
+        //제품 목록 창으로 이동
+        val list_button = findViewById<Button>(R.id.itemlist_button)
+        list_button.setOnClickListener{
+            startActivity(Intent(this@MainActivity,ListActivity::class.java))
+        }
+        //제품 조회
+        val check_button = findViewById<Button>(R.id.itemcheck_button)
+        check_button.setOnClickListener{
+            startActivity(Intent(this@MainActivity,NFCActivity::class.java))
+        }
+        //제품 등록
+        val newItem_button = findViewById<Button>(R.id.itemregister_button)
+        newItem_button.setOnClickListener {
+            startActivity(Intent(this@MainActivity,NewNFCActivity::class.java))
+        }
+        val notification_button = findViewById<Button>(R.id.alert_button)
+        notification_button.setOnClickListener{
+            startActivity(Intent(this, NotificationActivity::class.java))
+        }
+    }
+
+    fun changePassword(password:String){
+        FirebaseAuth.getInstance().currentUser!!.updatePassword(password).addOnCompleteListener { task ->
+            if(task.isSuccessful){
+                Toast.makeText(this, "비밀번호가 변경되었습니다.", Toast.LENGTH_LONG).show()
+            }else{
+                Toast.makeText(this, task.exception.toString(), Toast.LENGTH_LONG).show()
+
+            }
+        }
+    }
+}
