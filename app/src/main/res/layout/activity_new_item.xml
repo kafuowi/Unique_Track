@@ -49,6 +49,14 @@
             android:ems="10"
             android:hint="@string/explanation_hint"
             android:inputType="textPersonName" />
+
+        <FrameLayout
+            android:id="@+id/ImageUploadLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+
     </LinearLayout>
 
     <Button
