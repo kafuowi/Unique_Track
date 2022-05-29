@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         //firebase에서 현재 uid 받아옴 (main창에 들어가면 바로 구할 수 있게)
         val user = Firebase.auth.currentUser
         //이메일 회원가입시에 해당하는 uid
-        uid=user.uid
+        uid=user!!.uid
 
         // 로그아웃
         val logoutbutton = findViewById<Button>(R.id.logout_button)

@@ -25,5 +25,6 @@
     <string name="explanation_hint">제품설명</string>
     <string name="owner_name_hint">소유자이름</string>
     <string name="product_name_hint">제품이름</string>
+    <string name="google_login">Google LOGIN</string>
 
 </resources>

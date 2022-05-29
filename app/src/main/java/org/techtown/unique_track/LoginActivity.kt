@@ -3,13 +3,17 @@ package org.techtown.unique_track
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
-import com.google.android.gms.auth.api.Auth
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
@@ -20,8 +24,8 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : AppCompatActivity() {
     private var auth : FirebaseAuth? = null
     // 구글 로그인 연동에 필요한 변수
+    private lateinit var activityLauncher:ActivityResultLauncher<Intent>
     var googleSignInClient : GoogleSignInClient? = null
-    var GOOGLE_LOGIN_CODE = 9001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,16 +47,31 @@ class LoginActivity : AppCompatActivity() {
                 editTextTextPassword3.text.toString())
         }
 
-        val google_login_button = findViewById<Button>(R.id.google_login_button)
-        google_login_button.setOnClickListener {
-            googleLogin()
-        }
+        //google login
+        // id, email request
         var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.web_client_id))
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
+        activityLauncher=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            result: ActivityResult ->
+            if(result.resultCode ==RESULT_OK){
+                var task=GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                try{
+                    var account=task.getResult(ApiException::class.java)!!
+                    firebaseAuthWithGoogle(account)
+                    Log.d("GoogleLogin","firebaseAuthWithGoogle: "+ account.id)
+                } catch(e:ApiException){
+                    Log.d("GoogleLogin","Google sign in failed: "+e.message)
+                }
+            }
+        }
+        val google_login_button = findViewById<Button>(R.id.google_login_button)
+        google_login_button.setOnClickListener {
+            activityLauncher.launch((googleSignInClient!!.signInIntent))
+        }
     }
 
     // 로그아웃하지 않을 시 자동 로그인 , 회원가입시 바로 로그인 됨
@@ -91,40 +110,6 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
     }
-    fun googleLogin() {
-        var signInIntent = googleSignInClient?.signInIntent
-        startActivityForResult(signInIntent, GOOGLE_LOGIN_CODE)
-    } // googleLogin
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if(requestCode == GOOGLE_LOGIN_CODE) {
-
-            var result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-
-            if (result != null) {
-
-
-                if(result.isSuccess) {
-
-                    var account = result.signInAccount
-                    firebaseAuthWithGoogle(account)
-                }
-                else{
-
-                    Toast.makeText(
-                        baseContext, "failed",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-            else{
-
-                Toast.makeText(this,  "failed", Toast.LENGTH_LONG)
-            }
-        } //if
-    } // onActivityResult
 
     fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
         var credential = GoogleAuthProvider.getCredential(account?.idToken, null)
