@@ -110,27 +110,16 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <Button
-        android:id="@+id/social_login"
+        android:id="@+id/google_login_button"
         android:layout_width="150dp"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
-        android:text="@string/social_login"
+        android:text="@string/google_login"
         android:textColor="@color/black"
-        android:textSize="16sp"
         app:backgroundTint="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/joinin_button" />
-
-    <Button
-        android:id="@+id/google_login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/social_login" />
+        app:layout_constraintTop_toBottomOf="@+id/joinin_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

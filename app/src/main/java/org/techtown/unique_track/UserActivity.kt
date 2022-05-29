@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
-import org.w3c.dom.Text
 
 class UserActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,31 +53,19 @@ class UserActivity : AppCompatActivity() {
             uid=user.uid
 
             //사용자 정보 출력
-            val user_info=findViewById<TextView>(R.id.user_info)
+            val user_name=findViewById<TextView>(R.id.userName_info)
+            val user_email=findViewById<TextView>(R.id.userEmail_info)
+            val user_id=findViewById<TextView>(R.id.uid_info)
+            val login_method=findViewById<TextView>(R.id.login_method)
+            user_email.setText(email)
+            user_id.setText(uid)
             if(name!=null){
-                user_info.setText("이름 : "+name+"\n\n이메일 : "+email+"\n\nUID : "+uid)
+                user_name.setText(name)
+                login_method.setText("Google Login")
             }else{
-                user_info.setText("이메일 : "+email+"\n\nUID : "+uid)
+                user_name.setText(" ")
+                login_method.setText("Email Login")
             }
-        }
-    }
-    //소셜로그인 시 사용자 정보 엑세스
-    private fun getProviderData() {
-        val user = Firebase.auth.currentUser
-        user?.let {
-            for (profile in it.providerData) {
-                // Id of the provider (ex: google.com)
-                val providerId = profile.providerId
-
-                // UID specific to the provider
-                //MainActivity에서 전역변수로 uid 선언
-                uid = profile.uid
-
-                // Name, email address
-                val name = profile.displayName
-                val email = profile.email
-            }
-            //소셜로그인 : 로그인 제공업체가 displayName 제공
         }
     }
 }
