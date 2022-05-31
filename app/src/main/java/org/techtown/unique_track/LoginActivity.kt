@@ -14,6 +14,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
@@ -88,6 +89,8 @@ class LoginActivity : AppCompatActivity() {
             auth?.signInWithEmailAndPassword(email, password)
                 ?.addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
+                        //pw=password
+                        reauthenticate(password)
                         Toast.makeText(
                             baseContext, "로그인에 성공 하였습니다.",
                             Toast.LENGTH_SHORT
@@ -108,6 +111,20 @@ class LoginActivity : AppCompatActivity() {
         if( user!= null){
             startActivity(Intent(this,MainActivity::class.java))
             finish()
+        }
+    }
+
+    //사용자 재인증
+    fun reauthenticate(password:String){
+        val user=Firebase.auth.currentUser!!
+        user.let{
+            val email=user.email
+
+            val credential = EmailAuthProvider
+                .getCredential(email.toString(),password)
+
+            user.reauthenticate(credential)
+                .addOnCompleteListener{ Toast.makeText(this,"사용자 재인증되었습니다.",Toast.LENGTH_SHORT).show()}
         }
     }
 
