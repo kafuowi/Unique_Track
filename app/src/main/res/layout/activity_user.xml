@@ -66,14 +66,14 @@
         android:id="@+id/userName_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="user name content"
+        android:text="       "
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.334"
+        app:layout_constraintHorizontal_bias="0.386"
         app:layout_constraintStart_toEndOf="@+id/textView13"
         app:layout_constraintTop_toBottomOf="@+id/textView9"
-        app:layout_constraintVertical_bias="0.17" />
+        app:layout_constraintVertical_bias="0.168" />
 
     <View
         android:id="@+id/divider"
@@ -127,11 +127,11 @@
         tools:layout_editor_absoluteX="1dp" />
 
     <TextView
-        android:id="@+id/login_method"
+        android:id="@+id/email_verified"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="login method"
+        android:text="email_verified"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.257"
@@ -181,7 +181,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="로그인 방법 |"
+        android:text="이메일 인증 |"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.049"
@@ -192,7 +192,7 @@
         android:id="@+id/changePW_email"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:text="이메일로 비밀번호 변경"
+        android:text="@string/changePW_email"
         app:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

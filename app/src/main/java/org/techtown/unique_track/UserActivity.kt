@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -57,6 +56,11 @@ class UserActivity : AppCompatActivity() {
             alertDialog.show()
         }
 
+        //비밀번호 재설정 이메일 보내기
+        val changePWemail=findViewById<Button>(R.id.changePW_email)
+        changePWemail.setOnClickListener{
+            sendPasswordReset()
+        }
     }
 
     // 현재 로그인한 사용자 가져오기
@@ -80,7 +84,7 @@ class UserActivity : AppCompatActivity() {
             val email=user.email
 
             // 유저의 이메일이 verified한지 체크
-            //val emailVerified = user.isEmailVerified
+            val emailVerified = user.isEmailVerified
 
             // The user's ID, unique to the Firebase project
             //MainActivity에서 전역변수로 uid 선언
@@ -90,16 +94,17 @@ class UserActivity : AppCompatActivity() {
             val user_name=findViewById<TextView>(R.id.userName_info)
             val user_email=findViewById<TextView>(R.id.userEmail_info)
             val user_id=findViewById<TextView>(R.id.uid_info)
-            val login_method=findViewById<TextView>(R.id.login_method)
+            val email_verified=findViewById<TextView>(R.id.email_verified)
+            user_name.setText(name)
             user_email.setText(email)
             user_id.setText(uid)
-            if(name!=null){
-                user_name.setText(name)
-                login_method.setText("Google Login")
+            if(emailVerified){
+                email_verified.setText("인증되었습니다.")
             }else{
-                user_name.setText(" ")
-                login_method.setText("Email Login")
+                email_verified.setText("인증되지않았습니다.")
             }
+
+
         }
     }
 
@@ -113,5 +118,19 @@ class UserActivity : AppCompatActivity() {
 
             }
         }
+    }
+
+    fun sendPasswordReset(){
+        val user= Firebase.auth.currentUser
+        val emailAddress=user!!.email
+
+        Firebase.auth.sendPasswordResetEmail(emailAddress.toString())
+            .addOnCompleteListener{ task ->
+                if(task.isSuccessful){
+                    Toast.makeText(this,"이메일 전송",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(this,"실패",Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 }
