@@ -31,6 +31,7 @@ import android.app.PendingIntent
 import android.nfc.Tag
 import android.text.Html
 import android.text.Spanned
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_nfc.*
 import java.lang.StringBuilder
@@ -50,6 +51,11 @@ class NewNFCActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_nfc)
+
+        val home_button4 =findViewById<Button>(R.id.home_button4)
+        home_button4.setOnClickListener{
+            startActivity(Intent(this@NewNFCActivity,MainActivity::class.java))
+        }
 
         // Restore saved text if available
         if (savedInstanceState != null) {

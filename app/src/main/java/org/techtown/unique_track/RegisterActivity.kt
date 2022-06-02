@@ -1,5 +1,6 @@
 package org.techtown.unique_track
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -17,6 +18,12 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
         setContentView(R.layout.activity_join)
+
+        //back 버튼 -> 이전 창(로그인창으로)
+        val back_button2=findViewById<Button>(R.id.back_button2)
+        back_button2.setOnClickListener{
+            startActivity(Intent(this@RegisterActivity,LoginActivity::class.java))
+        }
 
         val join_button = findViewById<Button>(R.id.join_button)
         join_button.setOnClickListener {
