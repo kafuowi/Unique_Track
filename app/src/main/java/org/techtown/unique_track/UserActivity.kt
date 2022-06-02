@@ -5,10 +5,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -82,6 +80,7 @@ class UserActivity : AppCompatActivity() {
             // name, email address
             val name=user.displayName
             val email=user.email
+            val photoUrl=user.photoUrl
 
             // 유저의 이메일이 verified한지 체크
             val emailVerified = user.isEmailVerified
@@ -91,10 +90,15 @@ class UserActivity : AppCompatActivity() {
             uid=user.uid
 
             //사용자 정보 출력
+            val user_photo=findViewById<ImageView>(R.id.user_photo)
             val user_name=findViewById<TextView>(R.id.userName_info)
             val user_email=findViewById<TextView>(R.id.userEmail_info)
             val user_id=findViewById<TextView>(R.id.uid_info)
             val email_verified=findViewById<TextView>(R.id.email_verified)
+
+            Glide.with(this)
+                .load(photoUrl)
+                .into(user_photo)
             user_name.setText(name)
             user_email.setText(email)
             user_id.setText(uid)

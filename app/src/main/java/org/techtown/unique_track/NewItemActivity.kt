@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -56,6 +57,17 @@ class NewItemActivity : AppCompatActivity(),FragmentMainProfile.OnDataPassListen
         //이미지업로드
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
         supportFragmentManager.beginTransaction().replace(R.id.ImageUploadLayout,FragmentMainProfile()).commit()
+
+        //home버튼 -> main창으로
+        val home_button3 =findViewById<Button>(R.id.home_button3)
+        home_button3.setOnClickListener{
+            startActivity(Intent(this@NewItemActivity,MainActivity::class.java))
+        }
+        //back 버튼 -> 이전 창(NFC인식창으로)
+        val back_button=findViewById<Button>(R.id.back_button)
+        back_button.setOnClickListener{
+            startActivity(Intent(this@NewItemActivity,NewNFCActivity::class.java))
+        }
     }
     data class Product(val Explanation: String? = null, val Image: String? = null, val OwnerName: String? = null, val OwnerUID: String? = null, val ProductName: String? = null, val RegisterDate: String? = null) {
         // Null default values create a no-argument default constructor, which is needed
