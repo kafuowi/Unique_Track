@@ -47,7 +47,7 @@ class NewItemActivity : AppCompatActivity(),FragmentMainProfile.OnDataPassListen
         else{
             NewNFCcodeView.text = "NFC Not Found"
         }
-        val overlapLock = false
+        val overlapLock = false //중복등록을 막으려면 true
         if(overlapLock) {
             val temp = NFCcode?.let { database.child("Products").child(it).get() }
             temp?.addOnSuccessListener {
