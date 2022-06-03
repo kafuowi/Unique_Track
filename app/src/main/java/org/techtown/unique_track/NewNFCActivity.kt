@@ -33,20 +33,10 @@ import android.text.Html
 import android.text.Spanned
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_nfc.*
 import java.lang.StringBuilder
 
 class NewNFCActivity : AppCompatActivity() {
-
-    private var auth : FirebaseAuth? = null
-    private lateinit var database: DatabaseReference
-
-
     // NFC adapter for checking NFC state in the device
     private var nfcAdapter : NfcAdapter? = null
 
@@ -60,9 +50,6 @@ class NewNFCActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        auth = Firebase.auth
-        database = Firebase.database.reference
-
         setContentView(R.layout.activity_new_nfc)
 
         val home_button4 =findViewById<Button>(R.id.home_button4)
@@ -145,9 +132,7 @@ class NewNFCActivity : AppCompatActivity() {
 
             val nfcTagSerialNum = sb.toString()
             logMessage("nfc ID", nfcTagSerialNum)
-
             val newintent = Intent(this@NewNFCActivity, NewItemActivity::class.java)
-
 
             newintent.putExtra("NFCcode",nfcTagSerialNum)
             startActivity(newintent)
