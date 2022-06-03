@@ -1,19 +1,23 @@
 package org.techtown.unique_track
 
+import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
+import android.text.method.PasswordTransformationMethod
+import android.widget.*
+import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
-import org.w3c.dom.Text
 
 class UserActivity : AppCompatActivity() {
+    private var auth : FirebaseAuth? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user)
+        auth = Firebase.auth
 
         //로그인한 사용자 체크
         checkCurrentUser()
@@ -24,6 +28,36 @@ class UserActivity : AppCompatActivity() {
         val home_button =findViewById<Button>(R.id.home_button)
         home_button.setOnClickListener{
             startActivity(Intent(this@UserActivity,MainActivity::class.java))
+        }
+
+        //로그아웃
+        val logoutbutton = findViewById<Button>(R.id.logout_button)
+        logoutbutton.setOnClickListener {
+            // 로그인 화면으로
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+            auth?.signOut()
+        }
+
+        //비밀번호 재설정
+        val changepwdbutton = findViewById<Button>(R.id.changepwd_button)
+        changepwdbutton.setOnClickListener {
+            var editTextNewPassword = EditText(this)
+            editTextNewPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+            var alertDialog = AlertDialog.Builder(this)
+            alertDialog.setTitle("패스워드 변경")
+            alertDialog.setMessage("변경하고 싶은 패스워드를 입력하세요")
+            alertDialog.setView(editTextNewPassword)
+            alertDialog.setPositiveButton("변경", {dialogInterface, i -> changePassword(editTextNewPassword.text.toString()) })
+            alertDialog.setNegativeButton("취소", {dialogInterface, i -> dialogInterface.dismiss() })
+            alertDialog.show()
+        }
+
+        //비밀번호 재설정 이메일 보내기
+        val changePWemail=findViewById<Button>(R.id.changePW_email)
+        changePWemail.setOnClickListener{
+            sendPasswordReset()
         }
     }
 
@@ -46,38 +80,61 @@ class UserActivity : AppCompatActivity() {
             // name, email address
             val name=user.displayName
             val email=user.email
+            val photoUrl=user.photoUrl
 
             // 유저의 이메일이 verified한지 체크
-            //val emailVerified = user.isEmailVerified
+            val emailVerified = user.isEmailVerified
 
             // The user's ID, unique to the Firebase project
-            val uid=user.uid
+            //MainActivity에서 전역변수로 uid 선언
+            uid=user.uid
 
             //사용자 정보 출력
-            val user_info=findViewById<TextView>(R.id.user_info)
-            if(name!=null){
-                user_info.setText("이름 : "+name+"\n\n이메일 : "+email+"\n\nUID : "+uid)
+            val user_photo=findViewById<ImageView>(R.id.user_photo)
+            val user_name=findViewById<TextView>(R.id.userName_info)
+            val user_email=findViewById<TextView>(R.id.userEmail_info)
+            val user_id=findViewById<TextView>(R.id.uid_info)
+            val email_verified=findViewById<TextView>(R.id.email_verified)
+
+            Glide.with(this)
+                .load(photoUrl)
+                .into(user_photo)
+            user_name.setText(name)
+            user_email.setText(email)
+            user_id.setText(uid)
+            if(emailVerified){
+                email_verified.setText("인증되었습니다.")
             }else{
-                user_info.setText("이메일 : "+email+"\n\nUID : "+uid)
+                email_verified.setText("인증되지않았습니다.")
+            }
+
+
+        }
+    }
+
+    //비밀번호 변경
+    fun changePassword(password:String){
+        FirebaseAuth.getInstance().currentUser!!.updatePassword(password).addOnCompleteListener { task ->
+            if(task.isSuccessful){
+                Toast.makeText(this, "비밀번호가 변경되었습니다.", Toast.LENGTH_LONG).show()
+            }else{
+                Toast.makeText(this, task.exception.toString(), Toast.LENGTH_LONG).show()
+
             }
         }
     }
-    //소셜로그인 시 사용자 정보 엑세스
-    private fun getProviderData() {
-        val user = Firebase.auth.currentUser
-        user?.let {
-            for (profile in it.providerData) {
-                // Id of the provider (ex: google.com)
-                val providerId = profile.providerId
 
-                // UID specific to the provider
-                val uid = profile.uid
+    fun sendPasswordReset(){
+        val user= Firebase.auth.currentUser
+        val emailAddress=user!!.email
 
-                // Name, email address
-                val name = profile.displayName
-                val email = profile.email
+        Firebase.auth.sendPasswordResetEmail(emailAddress.toString())
+            .addOnCompleteListener{ task ->
+                if(task.isSuccessful){
+                    Toast.makeText(this,"이메일 전송",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(this,"실패",Toast.LENGTH_SHORT).show()
+                }
             }
-            //소셜로그인 : 로그인 제공업체가 displayName 제공
-        }
     }
 }

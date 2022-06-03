@@ -12,19 +12,22 @@
     <string name="logout">LOGOUT</string>
     <string name="change_password">NEW PW</string>
     <string name="user">USER</string>
-    <string name="user_button">USER</string>
-    <string name="itemregister_button">제품 등록</string>
-    <string name="itemlist_button">제품 목록</string>
+    <string name="user_button">마이\n페이지</string>
+    <string name="itemregister_button">제품\n등록</string>
+    <string name="itemlist_button">제품\n목록</string>
     <string name="itemtransfer_button">제품 양도</string>
+    <string name="itemcheck_button">제품\n조회</string>
     <string name="item_content">Item</string>
-    <string name="list">| List</string>
+    <string name="list">제품 목록</string>
+    <string name="nfc_title_text">NFC 태그를 갖다대세요</string>
+    <string name="web_client_id">174108156327-s59uad1qsclfibp38g6jtu2h58rm4tql.apps.googleusercontent.com</string>
+    <string name="blank">  </string>
 
-    <!-- recyclerview를 위한 데이터 -->
-    <string name="item1">[노리개] 북 5호 노리개</string>
-    <string name="item2">[그림] Another Chance</string>
-    <string name="item3">[기타] 깁슨 레스폴 스탠다드 트레디셔널</string>
-    <string name="date1">2021-11-12</string>
-    <string name="date2">2022-02-01</string>
-    <string name="date3">2022-03-05</string>
+    <string name="explanation_hint">제품설명</string>
+    <string name="owner_name_hint">소유자이름</string>
+    <string name="product_name_hint">제품이름</string>
+    <string name="google_login">Google LOGIN</string>
+    <string name="changePW_email">이메일로 비밀번호 변경</string>
+    <string name="nfc_image">NFC image</string>
 
 </resources>
