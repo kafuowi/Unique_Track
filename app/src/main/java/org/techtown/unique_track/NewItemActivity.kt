@@ -22,7 +22,7 @@ import java.time.LocalDate
 class NewItemActivity : AppCompatActivity(),FragmentMainProfile.OnDataPassListener {
     private var auth : FirebaseAuth? = null
     private lateinit var database: DatabaseReference
-    var  NFCcode : String? = null
+    private var  NFCcode : String? = null
     var ImageURL :String? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -36,23 +36,60 @@ class NewItemActivity : AppCompatActivity(),FragmentMainProfile.OnDataPassListen
 
         NewNFCcodeView.text = "NFC Not Found"
 
+
         if(codeintent.hasExtra("NFCcode")) {
             NFCcode = codeintent.getStringExtra("NFCcode")
 
 
             NewNFCcodeView.text = NFCcode
-            Toast.makeText(this, "NFC ID: $NFCcode", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "NFC ID: $NFCcode", Toast.LENGTH_SHORT).show()
         }
         else{
             NewNFCcodeView.text = "NFC Not Found"
         }
-        UploadButton.setOnClickListener {
-            writeNewProduct(TextExplanation.text.toString(),ImageURL,TextOwnerName.text.toString(),
-                auth!!.uid.toString(),TextProductName.text.toString(), LocalDate.now().toString())
-            val newintent = Intent(this@NewItemActivity, MainActivity::class.java)
-            startActivity(newintent)
-            finish()
+        val overlapLock = false
+        if(overlapLock) {
+            val temp = NFCcode?.let { database.child("Products").child(it).get() }
+            temp?.addOnSuccessListener {
+                if (it.exists()) {
+                    Toast.makeText(this, "이미 등록된 태그입니다.", Toast.LENGTH_SHORT).show()
+                    val newintent = Intent(this@NewItemActivity, MainActivity::class.java)
+                    startActivity(newintent)
+                    finish()
+                } else {
+                    UploadButton.setOnClickListener {
+                        writeNewProduct(
+                            TextExplanation.text.toString(),
+                            ImageURL,
+                            TextOwnerName.text.toString(),
+                            auth!!.uid.toString(),
+                            TextProductName.text.toString(),
+                            LocalDate.now().toString()
+                        )
+                        val newintent = Intent(this@NewItemActivity, MainActivity::class.java)
+                        startActivity(newintent)
+                        finish()
+                    }
+                }
+            }
         }
+        else{
+            UploadButton.setOnClickListener {
+                writeNewProduct(
+                    TextExplanation.text.toString(),
+                    ImageURL,
+                    TextOwnerName.text.toString(),
+                    auth!!.uid.toString(),
+                    TextProductName.text.toString(),
+                    LocalDate.now().toString()
+                )
+                val newintent = Intent(this@NewItemActivity, MainActivity::class.java)
+                startActivity(newintent)
+                finish()
+            }
+        }
+
+
 
         //이미지업로드
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
