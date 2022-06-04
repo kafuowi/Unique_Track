@@ -87,7 +87,8 @@ class NewItemActivity : AppCompatActivity(),FragmentMainProfile.OnDataPassListen
         //back 버튼 -> 이전 창(NFC인식창으로)
         val back_button=findViewById<Button>(R.id.back_button)
         back_button.setOnClickListener{
-            startActivity(Intent(this@NewItemActivity,NewNFCActivity::class.java))
+            finish()
+            //startActivity(Intent(this@NewItemActivity,NewNFCActivity::class.java))
         }
     }
     data class Product(val Explanation: String? = null, val Image: String? = null, val OwnerUID: String? = null, val ProductName: String? = null, val RegisterDate: String? = null,val NFCUID: String?) {
