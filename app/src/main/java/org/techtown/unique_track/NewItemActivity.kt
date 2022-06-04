@@ -46,13 +46,34 @@ class NewItemActivity : AppCompatActivity(),FragmentMainProfile.OnDataPassListen
         else{
             NewNFCcodeView.text = "NFC Not Found"
         }
-        UploadButton.setOnClickListener {
-            writeNewProduct(TextExplanation.text.toString(),ImageURL,
-                auth!!.uid.toString(),TextProductName.text.toString(), LocalDate.now().toString())
-            val newintent = Intent(this@NewItemActivity, MainActivity::class.java)
-            startActivity(newintent)
-            finish()
+        val editTrue = codeintent.getBooleanExtra("editTrue",false)
+
+        NFCcode?.let { it ->
+            database.child("Products").child(it).get().addOnSuccessListener {
+                if(!it.exists() or (editTrue)){
+
+                    //Toast.makeText(this@NewItemActivity, (!it.exists()).toString()+editTrue.toString(), Toast.LENGTH_SHORT).show()
+                    UploadButton.setOnClickListener {
+                        writeNewProduct(TextExplanation.text.toString(),ImageURL,
+                            auth!!.uid.toString(),TextProductName.text.toString(), LocalDate.now().toString())
+                        val newintent = Intent(this@NewItemActivity, MainActivity::class.java)
+                        startActivity(newintent)
+                        finish()
+                    }
+                }
+                else{
+
+                    Toast.makeText(this@NewItemActivity, "이미 존재하는 태그입니다.", Toast.LENGTH_SHORT).show()
+                    val newintent = Intent(this@NewItemActivity, MainActivity::class.java)
+                    startActivity(newintent)
+                    finish()
+
+                }
+            }.addOnFailureListener{
+                Log.e("firebase", "Error getting data", it)
+            }
         }
+
 
         //이미지업로드
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)

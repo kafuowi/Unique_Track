@@ -4,9 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +19,6 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_iteminfo.*
 import java.lang.Exception
 
@@ -43,7 +42,10 @@ class ItemShowActivity : AppCompatActivity() {
         back_button3.setOnClickListener{
             //startActivity(Intent(this@ItemShowActivity,NFCActivity::class.java))
             finish()
+
         }
+
+
 
         var NFCuid = getIntent().getStringExtra("NFCuid")
         var notNullableNFCuid : String = NFCuid!!
@@ -52,7 +54,7 @@ class ItemShowActivity : AppCompatActivity() {
 
         val productListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val imageView = findViewById<ImageView>(R.id.imageView2)
+                val imageView = findViewById<ImageView>(R.id.editItemImage)
                 // Create a storage reference from our app
                 val storageRef = FirebaseStorage.getInstance().reference
                 val head_len = "https://firebasestorage.googleapis.com/v0/b/unique-track-f112a.appspot.com/o/images%2F"
@@ -87,6 +89,18 @@ class ItemShowActivity : AppCompatActivity() {
                 InformationText.append("RegisterDate: "+registerDate+"\n")
                 val explanation = snapshot.child("explanation").getValue<String>()
                 InformationText.append("Explanation: "+explanation)
+                if(ownerUID == auth!!.uid) {
+                    itemEditButton.setOnClickListener {
+                        val newintent = Intent(this@ItemShowActivity, NewItemActivity::class.java)
+                        newintent.putExtra("NFCcode", snapshot.child("nfcuid").getValue<String>())
+                        newintent.putExtra("editTrue", true)
+                        startActivity(newintent)
+                        finish()
+                    }
+                }
+                else{
+                    itemEditButton.visibility = View.GONE
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
