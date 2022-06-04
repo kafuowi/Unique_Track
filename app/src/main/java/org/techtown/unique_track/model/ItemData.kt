@@ -5,5 +5,6 @@ data class ItemData(
     val productName:String ?= null,
     val registerDate:String ?= null,
     val image:String ?= null,
-    val ownerUID:String ?= null
+    val ownerUID:String ?= null,
+    val nfcuid:String ?= null
 )

@@ -47,7 +47,7 @@ class NewItemActivity : AppCompatActivity(),FragmentMainProfile.OnDataPassListen
             NewNFCcodeView.text = "NFC Not Found"
         }
         UploadButton.setOnClickListener {
-            writeNewProduct(TextExplanation.text.toString(),ImageURL,TextOwnerName.text.toString(),
+            writeNewProduct(TextExplanation.text.toString(),ImageURL,
                 auth!!.uid.toString(),TextProductName.text.toString(), LocalDate.now().toString())
             val newintent = Intent(this@NewItemActivity, MainActivity::class.java)
             startActivity(newintent)
@@ -69,12 +69,12 @@ class NewItemActivity : AppCompatActivity(),FragmentMainProfile.OnDataPassListen
             startActivity(Intent(this@NewItemActivity,NewNFCActivity::class.java))
         }
     }
-    data class Product(val Explanation: String? = null, val Image: String? = null, val OwnerName: String? = null, val OwnerUID: String? = null, val ProductName: String? = null, val RegisterDate: String? = null) {
+    data class Product(val Explanation: String? = null, val Image: String? = null, val OwnerUID: String? = null, val ProductName: String? = null, val RegisterDate: String? = null,val NFCUID: String?) {
         // Null default values create a no-argument default constructor, which is needed
         // for deserialization from a DataSnapshot.
     }
-    fun writeNewProduct(Explanation: String?,Image: String?,OwnerName: String?,OwnerUID: String?,ProductName: String?,RegisterDate: String?) {
-        val product = Product(Explanation,Image,OwnerName,OwnerUID,ProductName,RegisterDate)
+    fun writeNewProduct(Explanation: String?,Image: String?,OwnerUID: String?,ProductName: String?,RegisterDate: String?) {
+        val product = Product(Explanation,Image,OwnerUID,ProductName,RegisterDate,NFCcode)
         NFCcode?.let { database.child("Products").child(it).setValue(product) }
     }
 

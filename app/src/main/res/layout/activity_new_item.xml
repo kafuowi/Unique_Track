@@ -88,14 +88,6 @@
             android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/TextOwnerName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint='@string/owner_name_hint'
-            android:inputType="textPersonName" />
-
-        <EditText
             android:id="@+id/TextExplanation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
