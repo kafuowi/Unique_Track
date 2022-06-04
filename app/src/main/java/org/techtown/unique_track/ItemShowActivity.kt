@@ -41,7 +41,8 @@ class ItemShowActivity : AppCompatActivity() {
         //back 버튼 -> 이전 창(NFC인식창으로)
         val back_button3=findViewById<Button>(R.id.back_button3)
         back_button3.setOnClickListener{
-            startActivity(Intent(this@ItemShowActivity,NFCActivity::class.java))
+            //startActivity(Intent(this@ItemShowActivity,NFCActivity::class.java))
+            finish()
         }
 
         var NFCuid = getIntent().getStringExtra("NFCuid")
