@@ -1,18 +1,26 @@
 package org.techtown.unique_track
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.method.PasswordTransformationMethod
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 
 class UserActivity : AppCompatActivity() {
     private var auth : FirebaseAuth? = null
+    private val REQ_SELECT_IMG=200
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +36,25 @@ class UserActivity : AppCompatActivity() {
         val home_button =findViewById<Button>(R.id.home_button)
         home_button.setOnClickListener{
             startActivity(Intent(this@UserActivity,MainActivity::class.java))
+        }
+
+        //프로필 사진 수정
+        val editPicbutton=findViewById<Button>(R.id.picEdit_button)
+        editPicbutton.setOnClickListener {
+            openGallery()
+        }
+
+        //이름 수정
+        val editNamebutton=findViewById<Button>(R.id.nameEdit_button)
+        editNamebutton.setOnClickListener {
+            var editTextPersonName=EditText(this)
+            var alertDialog=AlertDialog.Builder(this)
+            alertDialog.setTitle("이름 변경")
+                .setMessage(" ")
+                .setView(editTextPersonName)
+                .setPositiveButton("변경",{dialogInterface, i-> changeUserName(editTextPersonName.text.toString()) })
+                .setNegativeButton("취소",{dialogInterface, i-> dialogInterface.dismiss()})
+                .show()
         }
 
         //로그아웃
@@ -49,7 +76,7 @@ class UserActivity : AppCompatActivity() {
             alertDialog.setTitle("패스워드 변경")
             alertDialog.setMessage("변경하고 싶은 패스워드를 입력하세요")
             alertDialog.setView(editTextNewPassword)
-            alertDialog.setPositiveButton("변경", {dialogInterface, i -> changePassword(editTextNewPassword.text.toString()) })
+            alertDialog.setPositiveButton("변경", {dialogInterface, i -> changePassword(editTextNewPassword.text.toString())})
             alertDialog.setNegativeButton("취소", {dialogInterface, i -> dialogInterface.dismiss() })
             alertDialog.show()
         }
@@ -124,6 +151,7 @@ class UserActivity : AppCompatActivity() {
         }
     }
 
+    // 이메일 전송 비밀번호 변경
     fun sendPasswordReset(){
         val user= Firebase.auth.currentUser
         val emailAddress=user!!.email
@@ -134,6 +162,82 @@ class UserActivity : AppCompatActivity() {
                     Toast.makeText(this,"이메일 전송",Toast.LENGTH_SHORT).show()
                 }else{
                     Toast.makeText(this,"실패",Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    //프로필 이름 변경, user창에 출력
+    fun changeUserName(name:String){
+        //DB에 이름 저장
+        val user=Firebase.auth.currentUser
+        val profileUpdates= userProfileChangeRequest {
+            displayName=name
+        }
+        user!!.updateProfile(profileUpdates)
+            .addOnCompleteListener{ task ->
+                if(task.isSuccessful){
+                    //바뀐 이름 바로 user창에 보이게
+                    user?.let{
+                        val name=user.displayName
+                        val user_name=findViewById<TextView>(R.id.userName_info)
+                        user_name.setText(name)
+                    }
+                    Toast.makeText(this,"Profile Image update",Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    //갤러리에서 사진 - 요청
+    private fun openGallery(){
+        val intent = Intent()
+        intent.type="image/*"
+        intent.action=Intent.ACTION_GET_CONTENT
+        startActivityForResult(intent,REQ_SELECT_IMG)
+    }
+    //갤러리 사진 - 결과
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode== Activity.RESULT_OK){
+            when(requestCode){
+                REQ_SELECT_IMG->{
+                    data?:return
+                    val uri=data.data as Uri
+                    updateProfileImg(uri)   //이미지 DB에 저장
+                    setImgUri(uri)          //이미지 화면에 출력
+                }
+            }
+        }else{
+            Toast.makeText(this,"사진을 불러오지 못했습니다.",Toast.LENGTH_SHORT).show()
+        }
+    }
+    //Uri이용한 이미지 셋
+    private fun setImgUri(imgUri:Uri){
+        val profileImg=findViewById<ImageView>(R.id.user_photo)
+        imgUri.let{
+            val bitmap: Bitmap
+            if(Build.VERSION.SDK_INT<28){
+                bitmap= MediaStore.Images.Media.getBitmap(
+                    this.contentResolver,
+                    imgUri
+                )
+                profileImg.setImageBitmap(bitmap)
+            }else{
+                val source= ImageDecoder.createSource(this.contentResolver,imgUri)
+                bitmap=ImageDecoder.decodeBitmap(source)
+                profileImg.setImageBitmap(bitmap)
+            }
+        }
+    }
+    //프로필 이미지 DB에 업로드
+    private fun updateProfileImg(pic_uri:Uri){
+        val user=Firebase.auth.currentUser
+        val profileUpdates= userProfileChangeRequest {
+            photoUri=pic_uri
+        }
+        user!!.updateProfile(profileUpdates)
+            .addOnCompleteListener{ task ->
+                if(task.isSuccessful){
+                    Toast.makeText(this,"Profile Image update",Toast.LENGTH_SHORT).show()
                 }
             }
     }

@@ -1,8 +1,10 @@
 package org.techtown.unique_track
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -30,6 +32,17 @@ class ItemShowActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_iteminfo)
         auth = Firebase.auth
+
+        //home버튼 -> main창으로
+        val home_button5 =findViewById<Button>(R.id.home_button5)
+        home_button5.setOnClickListener{
+            startActivity(Intent(this@ItemShowActivity,MainActivity::class.java))
+        }
+        //back 버튼 -> 이전 창(NFC인식창으로)
+        val back_button3=findViewById<Button>(R.id.back_button3)
+        back_button3.setOnClickListener{
+            startActivity(Intent(this@ItemShowActivity,NFCActivity::class.java))
+        }
 
         var NFCuid = getIntent().getStringExtra("NFCuid")
         var notNullableNFCuid : String = NFCuid!!
