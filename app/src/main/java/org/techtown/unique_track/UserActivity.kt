@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.text.method.PasswordTransformationMethod
 import android.widget.*
@@ -16,11 +17,15 @@ import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_user.*
 
 class UserActivity : AppCompatActivity() {
     private var auth : FirebaseAuth? = null
     private val REQ_SELECT_IMG=200
+    private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -183,6 +188,16 @@ class UserActivity : AppCompatActivity() {
                         user_name.setText(name)
                     }
                     Toast.makeText(this,"Profile Image update",Toast.LENGTH_SHORT).show()
+                    //Get current user uid
+                    val currentUser = Firebase.auth.currentUser
+                    uid = currentUser?.uid
+                    val notNullableID : String = uid!!
+                    //Store user information in database
+                    database = Firebase.database.reference
+                    val username = user.displayName
+                    val email = user.email
+                    val user = RegisterActivity.User(username, email)
+                    database.child("Owners").child(notNullableID).setValue(user)
                 }
             }
     }

@@ -45,12 +45,10 @@ class ItemShowActivity : AppCompatActivity() {
 
         }
 
-
-
         var NFCuid = getIntent().getStringExtra("NFCuid")
         var notNullableNFCuid : String = NFCuid!!
 
-        database = FirebaseDatabase.getInstance().getReference().child("Products").child(notNullableNFCuid)
+        database = FirebaseDatabase.getInstance().getReference()
 
         val productListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -81,14 +79,24 @@ class ItemShowActivity : AppCompatActivity() {
                 //var text = findViewById<TextView>(R.id.InformationText)
                 val productName = snapshot.child("productName").getValue<String>()
                 InformationText.append("ProductName: "+productName+"\n")
-                val ownerUID = snapshot.child("ownerUID").getValue<String>()
-                InformationText.append("OwnerUID: "+ownerUID+"\n")
-                val ownerName = snapshot.child("ownerName").getValue<String>()
-                InformationText.append("OwnerName: "+ownerName+"\n")
                 val registerDate = snapshot.child("registerDate").getValue<String>()
                 InformationText.append("RegisterDate: "+registerDate+"\n")
                 val explanation = snapshot.child("explanation").getValue<String>()
-                InformationText.append("Explanation: "+explanation)
+                InformationText.append("Explanation: "+explanation+"\n")
+                var ownerUID = snapshot.child("ownerUID").getValue<String>()
+                InformationText.append("OwnerUID: "+ownerUID+"\n")
+                //Get owner name from ownerUID
+                ownerUID = ownerUID!!
+
+                database.child("Owners").child(ownerUID).addValueEventListener(object: ValueEventListener{
+                        override fun onCancelled(error: DatabaseError) {
+                        }
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val ownerName = snapshot.child("username").getValue<String>()
+                            InformationText.append("OwnerName: " + ownerName + "\n")
+                        }
+                    })
+
                 if(ownerUID == auth!!.uid) {
                     itemEditButton.setOnClickListener {
                         val newintent = Intent(this@ItemShowActivity, NewItemActivity::class.java)
@@ -107,7 +115,7 @@ class ItemShowActivity : AppCompatActivity() {
                 InformationText.setText("Error: "+error.toException())
             }
         }
-        database.addValueEventListener(productListener)
+        database.child("Products").child(notNullableNFCuid).addValueEventListener(productListener)
     }
 
 }

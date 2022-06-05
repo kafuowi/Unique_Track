@@ -54,8 +54,8 @@
 
     <TextView
         android:id="@+id/InformationText"
-        android:layout_width="315dp"
-        android:layout_height="227dp"
+        android:layout_width="341dp"
+        android:layout_height="211dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,8 +64,8 @@
 
     <ImageView
         android:id="@+id/editItemImage"
-        android:layout_width="320dp"
-        android:layout_height="359dp"
+        android:layout_width="337dp"
+        android:layout_height="300dp"
         android:layout_marginTop="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
