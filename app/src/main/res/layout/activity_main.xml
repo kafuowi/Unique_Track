@@ -113,4 +113,16 @@
         app:layout_constraintTop_toBottomOf="@+id/itemregister_button"
         app:layout_constraintVertical_bias="0.177" />
 
+    <TextView
+        android:id="@+id/personalInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="184dp"
+        android:text="@string/personal_info"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/itemcheck_button"
+        app:layout_constraintVertical_bias="0.166" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
