@@ -26,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
     private var auth : FirebaseAuth? = null
     // 구글 로그인 연동에 필요한 변수
     private lateinit var activityLauncher:ActivityResultLauncher<Intent>
-    var googleSignInClient : GoogleSignInClient? = null
+    private var googleSignInClient : GoogleSignInClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
 
         //google login
         // id, email request
-        var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.web_client_id))
             .requestEmail()
             .build()
@@ -59,9 +59,9 @@ class LoginActivity : AppCompatActivity() {
         activityLauncher=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             result: ActivityResult ->
             if(result.resultCode ==RESULT_OK){
-                var task=GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                val task=GoogleSignIn.getSignedInAccountFromIntent(result.data)
                 try{
-                    var account=task.getResult(ApiException::class.java)!!
+                    val account=task.getResult(ApiException::class.java)!!
                     firebaseAuthWithGoogle(account)
                     Log.d("GoogleLogin","firebaseAuthWithGoogle: "+ account.id)
                 } catch(e:ApiException){
@@ -107,7 +107,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     // 유저정보 넘겨주고 메인 액티비티 호출
-    fun moveMainPage(user: FirebaseUser?){
+    private fun moveMainPage(user: FirebaseUser?){
         if( user!= null){
             startActivity(Intent(this,MainActivity::class.java))
             finish()
@@ -115,7 +115,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     //사용자 재인증
-    fun reauthenticate(password:String){
+    private fun reauthenticate(password:String){
         val user=Firebase.auth.currentUser!!
         user.let{
             val email=user.email
@@ -128,8 +128,8 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
-        var credential = GoogleAuthProvider.getCredential(account?.idToken, null)
+    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
+        val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
         auth?.signInWithCredential(credential)
             ?.addOnCompleteListener {
                     task ->

@@ -6,6 +6,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+            keyAlias "key0"
+            keyPassword "jade0416!"
+            storeFile file('C:\\Users\\LG\\AndroidAPK\\UniqueTrack.jks')
+            storePassword "jade0416!"
+        }
+    }
     compileSdk 32
 
     defaultConfig {
@@ -24,6 +32,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
