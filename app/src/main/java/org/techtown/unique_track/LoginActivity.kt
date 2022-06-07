@@ -22,11 +22,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_login.*
 
+var googleSignInClient : GoogleSignInClient? = null
+
 class LoginActivity : AppCompatActivity() {
     private var auth : FirebaseAuth? = null
     // 구글 로그인 연동에 필요한 변수
     private lateinit var activityLauncher:ActivityResultLauncher<Intent>
-    private var googleSignInClient : GoogleSignInClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
