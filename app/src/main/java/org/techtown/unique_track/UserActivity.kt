@@ -70,6 +70,7 @@ class UserActivity : AppCompatActivity() {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
             auth?.signOut()
+            googleSignInClient?.signOut()
         }
 
         //비밀번호 재설정
