@@ -67,6 +67,7 @@ class UserActivity : AppCompatActivity() {
         logoutbutton.setOnClickListener {
             // 로그인 화면으로
             val intent = Intent(this, LoginActivity::class.java)
+            intent.putExtra("logout",true)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
             auth?.signOut()

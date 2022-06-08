@@ -10,7 +10,7 @@ android {
         release {
             keyAlias "key0"
             keyPassword "jade0416!"
-            storeFile file('C:\\Users\\LG\\AndroidAPK\\UniqueTrack.jks')
+            storeFile file('/Users/choejihun/Developer/UniqueTrack.jks')
             storePassword "jade0416!"
         }
     }
@@ -20,7 +20,7 @@ android {
         applicationId "org.techtown.unique_track"
         minSdk 24
         targetSdk 32
-        versionCode 2
+        versionCode 3
         versionName "1.0"
         multiDexEnabled true
 

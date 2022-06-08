@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -55,6 +56,13 @@ class LoginActivity : AppCompatActivity() {
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
+        if(intent.hasExtra("logout")){
+            var logout = intent.getBooleanExtra("logout",false)
+            if(logout){
+                googleSignInClient!!.signOut()
+            }
+
+        }
 
         activityLauncher=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             result: ActivityResult ->
