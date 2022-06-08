@@ -16,6 +16,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_new_item.*
 import org.techtown.unique_track.Fragment.FragmentMainProfile
+import org.techtown.unique_track.model.ItemData
 import java.time.LocalDate
 
 
@@ -96,7 +97,7 @@ class NewItemActivity : AppCompatActivity(),FragmentMainProfile.OnDataPassListen
         // for deserialization from a DataSnapshot.
     }
     fun writeNewProduct(Explanation: String?,Image: String?,OwnerUID: String?,ProductName: String?,RegisterDate: String?) {
-        val product = Product(Explanation,Image,OwnerUID,ProductName,RegisterDate,NFCcode)
+        val product = ItemData(productName = ProductName, registerDate = RegisterDate, image = Image, ownerUID = OwnerUID, nfcuid = NFCcode, explanation = Explanation)
         NFCcode?.let { database.child("Products").child(it).setValue(product) }
     }
 
