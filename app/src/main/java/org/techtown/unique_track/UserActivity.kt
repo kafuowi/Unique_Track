@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_user.*
+import org.techtown.unique_track.model.User
 
 class UserActivity : AppCompatActivity() {
     private var auth : FirebaseAuth? = null
@@ -198,7 +199,7 @@ class UserActivity : AppCompatActivity() {
                     database = Firebase.database.reference
                     val username = user.displayName
                     val email = user.email
-                    val user = RegisterActivity.User(username, email)
+                    val user = User(username, email)
                     database.child("Owners").child(notNullableID).setValue(user)
                 }
             }
