@@ -77,14 +77,21 @@ class ItemShowActivity : AppCompatActivity() {
                 })
 
                 //var text = findViewById<TextView>(R.id.InformationText)
-                val productName = snapshot.child("productName").getValue<String>()
-                InformationText.append("ProductName: "+productName+"\n")
-                val registerDate = snapshot.child("registerDate").getValue<String>()
-                InformationText.append("RegisterDate: "+registerDate+"\n")
-                val explanation = snapshot.child("explanation").getValue<String>()
-                InformationText.append("Explanation: "+explanation+"\n")
-                var ownerUID = snapshot.child("ownerUID").getValue<String>()
-                InformationText.append("OwnerUID: "+ownerUID+"\n")
+//                val productName = snapshot.child("productName").getValue<String>()
+//                InformationText.append("ProductName: "+productName+"\n")
+//                val registerDate = snapshot.child("registerDate").getValue<String>()
+//                InformationText.append("RegisterDate: "+registerDate+"\n")
+//                val explanation = snapshot.child("explanation").getValue<String>()
+//                InformationText.append("Explanation: "+explanation+"\n")
+//                var ownerUID = snapshot.child("ownerUID").getValue<String>()
+//                InformationText.append("OwnerUID: "+ownerUID+"\n")
+                var ownerUID : String? = null
+                for (data in snapshot.children) {
+                    if (data.key != "image")
+                        InformationText.append(data.key + " : " + data.getValue<String>() + "\n")
+                    if (data.key == "ownerUID")
+                        ownerUID = data.getValue<String>()
+                }
                 //Get owner name from ownerUID
                 ownerUID = ownerUID!!
 
