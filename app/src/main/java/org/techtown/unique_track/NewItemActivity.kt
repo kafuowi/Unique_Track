@@ -72,7 +72,7 @@ class NewItemActivity : AppCompatActivity(),FragmentMainProfile.OnDataPassListen
         nfcdata.addValueEventListener(object: ValueEventListener {
             // snapshot : get database(products)
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists() or (editTrue)) {
+                if (!(snapshot.exists()) or (editTrue)) {
 
 
                     //Toast.makeText(this@NewItemActivity, (!it.exists()).toString()+editTrue.toString(), Toast.LENGTH_SHORT).show()
