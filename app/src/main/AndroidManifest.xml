@@ -16,8 +16,9 @@
         android:roundIcon="@mipmap/ic_uniquetrack_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Unique_Track"
-        tools:ignore="HardcodedDebugMode"
-        android:debuggable="true">
+        >
+        <!--tools:ignore="HardcodedDebugMode"
+        android:debuggable="true"-->
         <activity android:name=".NewNFCActivity"
             android:launchMode="singleTop"
             android:exported="false">

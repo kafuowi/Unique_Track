@@ -20,6 +20,7 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_iteminfo.*
+import org.techtown.unique_track.adapter.MyAdapter
 import org.techtown.unique_track.model.ItemData
 import org.techtown.unique_track.model.User
 import java.lang.Exception
@@ -51,88 +52,51 @@ class ItemShowActivity : AppCompatActivity() {
         var notNullableNFCuid : String = NFCuid!!
 
         database = FirebaseDatabase.getInstance().getReference()
+        loadItemData(NFCuid)
+    }
 
-        val productListener = object : ValueEventListener {
+    private fun loadItemData(NFCid: String){
+        database= FirebaseDatabase.getInstance().getReference("Products").child(NFCid)    // 가져오려는 data가 있는 firebase path
+
+        database.addValueEventListener(object:ValueEventListener{
+            // snapshot : get database(products)
             override fun onDataChange(snapshot: DataSnapshot) {
-//                for (data in snapshot.children) {
-//                    if (data.key != "image")
-//                        InformationText.append(data.key + " : " + data.getValue<String>() + "\n")
-//                    if (data.key == "ownerUID")
-//                        ownerUID = data.getValue<String>()
-//                }
-                val data : ItemData? = snapshot.getValue<ItemData>()
-                val productName : String? = data?.productName
-                val registerDate : String? = data?.registerDate
-                val image : String? = data?.image //Get a image url
-                val ownerID : String? = data?.ownerUID
-                val nfcuid : String? = data?.nfcuid
-                val explanation : String? = data?.explanation
+                if(snapshot.exists()){
+                    val item=snapshot.getValue(ItemData::class.java)
+                // 현재 사용자의 uid와 firebase의 item_list의 ownerUID가 같을때만 myDataset에 데이터 추가
+                    InformationText.append("ProductName: " + item?.productName + "\n")
+                    InformationText.append("RegisterDate: " + item?.registerDate + "\n")
+                    InformationText.append("NFCuid: " + item?.nfcuid + "\n")
+                    InformationText.append("Explanation: " + item?.explanation + "\n")
+                    InformationText.append("OwnerUID: " + item?.ownerUID + "\n")
+                    val imageView = findViewById<ImageView>(R.id.editItemImage)
+                    // Create a storage reference from our app
+                    val storageRef = FirebaseStorage.getInstance().reference
+                    val head_len = "https://firebasestorage.googleapis.com/v0/b/unique-track-f112a.appspot.com/o/images%2F"
+                        .length
+                    //Get the image's short name
+                    var imageName = item?.image?.substring(head_len)
+                    imageName = imageName?.substringBefore("?alt=media&token=ca1ee99a-a96e-4074-9bf8-49eda0d701a4")
 
-                val imageView = findViewById<ImageView>(R.id.editItemImage)
-                // Create a storage reference from our app
-                val storageRef = FirebaseStorage.getInstance().reference
-                val head_len = "https://firebasestorage.googleapis.com/v0/b/unique-track-f112a.appspot.com/o/images%2F"
-                    .length
-                //Get the image's short name
-                var imageName = image?.substring(head_len)
-                imageName = imageName?.substringBefore("?alt=media&token=ca1ee99a-a96e-4074-9bf8-49eda0d701a4")
+                    // Create a reference with an initial file path and name
+                    val pathReference = storageRef.child("images/" + imageName)
 
-                // Create a reference with an initial file path and name
-                val pathReference = storageRef.child("images/" + imageName)
-
-                pathReference.downloadUrl.addOnSuccessListener(object : OnSuccessListener<Uri>{
-                    override fun onSuccess(p0: Uri?) {
-                        Glide.with(applicationContext).load(p0).override(100, 100).centerCrop().into(imageView)
-                    }
-                }).addOnFailureListener(object : OnFailureListener{
-                    override fun onFailure(p0: Exception) {
-                        Toast.makeText(applicationContext, "실패", Toast.LENGTH_SHORT).show()
-                    }
-                })
-                InformationText.append("ProductName: " + productName + "\n")
-                InformationText.append("RegisterDate: " + registerDate + "\n")
-                InformationText.append("NFCuid: " + nfcuid + "\n")
-                InformationText.append("Explanation: " + explanation + "\n")
-                InformationText.append("OwnerUID: " + ownerID + "\n")
-
-                //Get owner name from ownerUID
-                val ownerUID = ownerID!!
-
-                database.child("Owners").child(ownerUID).addValueEventListener(object: ValueEventListener{
-                        override fun onCancelled(error: DatabaseError) {
+                    pathReference.downloadUrl.addOnSuccessListener(object : OnSuccessListener<Uri>{
+                        override fun onSuccess(p0: Uri?) {
+                            Glide.with(applicationContext).load(p0).override(100, 100).centerCrop().into(imageView)
                         }
-                        override fun onDataChange(snapshot: DataSnapshot) {
-//                            for (data in snapshot.children) {
-//                                if (data.key == "username") {
-//                                    val ownerName = data.value
-//                                    InformationText.append("OwnerName: " + ownerName + "\n")
-//                                }
-//                            }
-                            val user : User? = snapshot.getValue<User>()
-                            val ownerName = user?.username
-                            InformationText.append("OwnerName: " + ownerName + "\n")
+                    }).addOnFailureListener(object : OnFailureListener{
+                        override fun onFailure(p0: Exception) {
+                            Toast.makeText(applicationContext, "실패", Toast.LENGTH_SHORT).show()
                         }
                     })
-
-                if(ownerUID == auth!!.uid) {
-                    itemEditButton.setOnClickListener {
-                        val newintent = Intent(this@ItemShowActivity, NewItemActivity::class.java)
-                        newintent.putExtra("NFCcode", snapshot.child("nfcuid").getValue<String>())
-                        newintent.putExtra("editTrue", true)
-                        startActivity(newintent)
-                        finish()
-                    }
-                }
-                else{
-                    itemEditButton.visibility = View.GONE
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                InformationText.setText("Error: "+error.toException())
+                TODO("Not yet implemented")
             }
-        }
-        database.child("Products").child(notNullableNFCuid).addValueEventListener(productListener)
-    }
 
+        })
+    }
 }

@@ -8,10 +8,10 @@ plugins {
 android {
     signingConfigs {
         release {
-            keyAlias "key1"
-            keyPassword "156675!"
-            storeFile file('C:\\Users\\jhjh6\\AndroidStudioProjects\\UniqueTrack(1).jks')
-            storePassword "156675!"
+            keyAlias "key0"
+            keyPassword "jade0416!"
+            storeFile file('/Users/choejihun/Developer/UniqueTrack.jks')
+            storePassword "jade0416!"
         }
     }
     compileSdk 32
@@ -20,7 +20,7 @@ android {
         applicationId "org.techtown.unique_track"
         minSdk 24
         targetSdk 32
-        versionCode 3
+        versionCode 4
         versionName "1.0"
         multiDexEnabled true
 
@@ -33,7 +33,7 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            debuggable true
+            //debuggable true
         }
     }
     compileOptions {
