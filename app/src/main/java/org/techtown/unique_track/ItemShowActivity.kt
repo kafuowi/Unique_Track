@@ -1,9 +1,11 @@
 package org.techtown.unique_track
 
+import android.content.ContentValues
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -67,7 +69,7 @@ class ItemShowActivity : AppCompatActivity() {
                     if(item?.ownerUID == auth!!.uid) {
                         itemEditButton.setOnClickListener {
                             val newintent = Intent(this@ItemShowActivity, NewItemActivity::class.java)
-                            newintent.putExtra("NFCcode", snapshot.child("nfcuid").getValue<String>())
+                            newintent.putExtra("NFCcode", item?.nfcuid)
                             newintent.putExtra("editTrue", true)
                             startActivity(newintent)
                             finish()
@@ -107,7 +109,7 @@ class ItemShowActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                Log.w(ContentValues.TAG, "loadPost:onCancelled", error.toException())
             }
 
         })

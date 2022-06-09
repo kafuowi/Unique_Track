@@ -13,6 +13,7 @@ import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.text.method.PasswordTransformationMethod
 import android.widget.*
+import androidx.core.app.ActivityCompat
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -68,9 +69,10 @@ class UserActivity : AppCompatActivity() {
         logoutbutton.setOnClickListener {
             // 로그인 화면으로
             val intent = Intent(this, LoginActivity::class.java)
-            intent.putExtra("logout",true)
+            //intent.putExtra("logout",true)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
+
             auth?.signOut()
             googleSignInClient?.signOut()
         }

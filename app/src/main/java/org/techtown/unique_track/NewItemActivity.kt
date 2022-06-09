@@ -1,5 +1,6 @@
 package org.techtown.unique_track
 
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -11,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_new_item.*
@@ -49,31 +50,7 @@ class NewItemActivity : AppCompatActivity(),FragmentMainProfile.OnDataPassListen
         }
         val editTrue = codeintent.getBooleanExtra("editTrue",false)
 
-        NFCcode?.let { it ->
-            database.child("Products").child(it).get().addOnSuccessListener {
-                if(!it.exists() or (editTrue)){
 
-                    //Toast.makeText(this@NewItemActivity, (!it.exists()).toString()+editTrue.toString(), Toast.LENGTH_SHORT).show()
-                    UploadButton.setOnClickListener {
-                        writeNewProduct(TextExplanation.text.toString(),ImageURL,
-                            auth!!.uid.toString(),TextProductName.text.toString(), LocalDate.now().toString())
-                        val newintent = Intent(this@NewItemActivity, MainActivity::class.java)
-                        startActivity(newintent)
-                        finish()
-                    }
-                }
-                else{
-
-                    Toast.makeText(this@NewItemActivity, "이미 존재하는 태그입니다.", Toast.LENGTH_SHORT).show()
-                    val newintent = Intent(this@NewItemActivity, MainActivity::class.java)
-                    startActivity(newintent)
-                    finish()
-
-                }
-            }.addOnFailureListener{
-                Log.e("firebase", "Error getting data", it)
-            }
-        }
 
 
         //이미지업로드
@@ -91,6 +68,42 @@ class NewItemActivity : AppCompatActivity(),FragmentMainProfile.OnDataPassListen
             finish()
             //startActivity(Intent(this@NewItemActivity,NewNFCActivity::class.java))
         }
+        val nfcdata= FirebaseDatabase.getInstance().getReference("Products").child(NFCcode!!)
+        nfcdata.addValueEventListener(object: ValueEventListener {
+            // snapshot : get database(products)
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists() or (editTrue)) {
+
+
+                    //Toast.makeText(this@NewItemActivity, (!it.exists()).toString()+editTrue.toString(), Toast.LENGTH_SHORT).show()
+                    UploadButton.setOnClickListener {
+                        writeNewProduct(
+                            TextExplanation.text.toString(),
+                            ImageURL,
+                            auth!!.uid.toString(),
+                            TextProductName.text.toString(),
+                            LocalDate.now().toString()
+                        )
+                        val newintent = Intent(this@NewItemActivity, MainActivity::class.java)
+                        startActivity(newintent)
+                        finish()
+                    }
+                } else {
+
+                    Toast.makeText(this@NewItemActivity, "이미 존재하는 태그입니다.", Toast.LENGTH_SHORT)
+                        .show()
+                    val newintent = Intent(this@NewItemActivity, MainActivity::class.java)
+                    startActivity(newintent)
+                    finish()
+
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w(ContentValues.TAG, "loadPost:onCancelled", error.toException())
+            }
+        })
     }
     data class Product(val Explanation: String? = null, val Image: String? = null, val OwnerUID: String? = null, val ProductName: String? = null, val RegisterDate: String? = null,val NFCUID: String?) {
         // Null default values create a no-argument default constructor, which is needed

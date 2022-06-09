@@ -57,13 +57,14 @@ class LoginActivity : AppCompatActivity() {
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
-        if(intent.hasExtra("logout")){
+        /*if(intent.hasExtra("logout")){
             var logout = intent.getBooleanExtra("logout",false)
             if(logout){
                 googleSignInClient!!.signOut()
+                auth!!.signOut()
             }
 
-        }
+        }*/
 
         activityLauncher=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             result: ActivityResult ->
