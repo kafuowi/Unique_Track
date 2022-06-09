@@ -48,6 +48,7 @@ class ItemShowActivity : AppCompatActivity() {
 
         }
 
+
         var NFCuid = getIntent().getStringExtra("NFCuid")
         var notNullableNFCuid : String = NFCuid!!
 
@@ -63,6 +64,18 @@ class ItemShowActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
                     val item=snapshot.getValue(ItemData::class.java)
+                    if(item?.ownerUID == auth!!.uid) {
+                        itemEditButton.setOnClickListener {
+                            val newintent = Intent(this@ItemShowActivity, NewItemActivity::class.java)
+                            newintent.putExtra("NFCcode", snapshot.child("nfcuid").getValue<String>())
+                            newintent.putExtra("editTrue", true)
+                            startActivity(newintent)
+                            finish()
+                        }
+                    }
+                    else{
+                        itemEditButton.visibility = View.GONE
+                    }
                 // 현재 사용자의 uid와 firebase의 item_list의 ownerUID가 같을때만 myDataset에 데이터 추가
                     InformationText.append("ProductName: " + item?.productName + "\n")
                     InformationText.append("RegisterDate: " + item?.registerDate + "\n")
