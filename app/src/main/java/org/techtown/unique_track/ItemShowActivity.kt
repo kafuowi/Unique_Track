@@ -78,6 +78,27 @@ class ItemShowActivity : AppCompatActivity() {
                     else{
                         itemEditButton.visibility = View.GONE
                     }
+                    var databaseuser = FirebaseDatabase.getInstance().getReference("Owners").child(item?.ownerUID!!)
+                    databaseuser.addValueEventListener(object:ValueEventListener{
+                        // snapshot : get database(products)
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            if (snapshot.exists()) {
+
+                                val tempuser=snapshot.getValue(User::class.java)
+                                var username = tempuser?.username!!
+
+                                InformationText.append("OwnerName: "+username+"\n")
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            Log.w(ContentValues.TAG, "loadPost:onCancelled", error.toException())
+                        }
+                    }
+                    )
+
+                    //owner 이름 가져오기
+
                 // 현재 사용자의 uid와 firebase의 item_list의 ownerUID가 같을때만 myDataset에 데이터 추가
                     InformationText.append("ProductName: " + item?.productName + "\n")
                     InformationText.append("RegisterDate: " + item?.registerDate + "\n")
@@ -113,5 +134,6 @@ class ItemShowActivity : AppCompatActivity() {
             }
 
         })
+
     }
 }

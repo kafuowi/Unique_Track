@@ -59,8 +59,9 @@ class RegisterActivity : AppCompatActivity() {
                         database = Firebase.database.reference
                         val user = User(username, email)
                         database.child("Owners").child(notNullableID).setValue(user)
+
                         Toast.makeText(
-                            this, "계정 생성 완료.",
+                            this, "계정 생성 완료."+notNullableID,
                             Toast.LENGTH_SHORT
                         ).show()
                         finish() // 가입창 종료
