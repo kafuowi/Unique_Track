@@ -21,6 +21,7 @@
     <string name="list">제품 목록</string>
     <string name="nfc_title_text">NFC 태그를 갖다대세요</string>
     <string name="edit_item">정보수정</string>
+    <string name="transfer_text">제품 양도</string>
     <string name="personal_info">개인정보 보호방침</string>
     <string name="web_client_id">174108156327-s59uad1qsclfibp38g6jtu2h58rm4tql.apps.googleusercontent.com</string>
     <string name="blank">  </string>
