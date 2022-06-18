@@ -135,6 +135,7 @@ class NewNFCActivity : AppCompatActivity() {
             val newintent = Intent(this@NewNFCActivity, NewItemActivity::class.java)
 
             newintent.putExtra("NFCcode",nfcTagSerialNum)
+            newintent.putExtra("editTrue",false)
             startActivity(newintent)
             finish()
 

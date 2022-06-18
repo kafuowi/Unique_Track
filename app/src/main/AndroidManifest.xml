@@ -11,11 +11,14 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_uniquetrack"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_uniquetrack_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Unique_Track">
+        android:theme="@style/Theme.Unique_Track"
+        >
+        <!--tools:ignore="HardcodedDebugMode"
+        android:debuggable="true"-->
         <activity android:name=".NewNFCActivity"
             android:launchMode="singleTop"
             android:exported="false">

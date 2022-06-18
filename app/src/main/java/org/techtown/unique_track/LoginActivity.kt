@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -22,11 +23,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_login.*
 
+var googleSignInClient : GoogleSignInClient? = null
+
 class LoginActivity : AppCompatActivity() {
     private var auth : FirebaseAuth? = null
     // 구글 로그인 연동에 필요한 변수
     private lateinit var activityLauncher:ActivityResultLauncher<Intent>
-    var googleSignInClient : GoogleSignInClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,18 +52,26 @@ class LoginActivity : AppCompatActivity() {
 
         //google login
         // id, email request
-        var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.web_client_id))
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
+        /*if(intent.hasExtra("logout")){
+            var logout = intent.getBooleanExtra("logout",false)
+            if(logout){
+                googleSignInClient!!.signOut()
+                auth!!.signOut()
+            }
+
+        }*/
 
         activityLauncher=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             result: ActivityResult ->
             if(result.resultCode ==RESULT_OK){
-                var task=GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                val task=GoogleSignIn.getSignedInAccountFromIntent(result.data)
                 try{
-                    var account=task.getResult(ApiException::class.java)!!
+                    val account=task.getResult(ApiException::class.java)!!
                     firebaseAuthWithGoogle(account)
                     Log.d("GoogleLogin","firebaseAuthWithGoogle: "+ account.id)
                 } catch(e:ApiException){
@@ -107,7 +117,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     // 유저정보 넘겨주고 메인 액티비티 호출
-    fun moveMainPage(user: FirebaseUser?){
+    private fun moveMainPage(user: FirebaseUser?){
         if( user!= null){
             startActivity(Intent(this,MainActivity::class.java))
             finish()
@@ -115,7 +125,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     //사용자 재인증
-    fun reauthenticate(password:String){
+    private fun reauthenticate(password:String){
         val user=Firebase.auth.currentUser!!
         user.let{
             val email=user.email
@@ -128,8 +138,8 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
-        var credential = GoogleAuthProvider.getCredential(account?.idToken, null)
+    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
+        val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
         auth?.signInWithCredential(credential)
             ?.addOnCompleteListener {
                     task ->

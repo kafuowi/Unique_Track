@@ -6,14 +6,23 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+            keyAlias "key0"
+            keyPassword "unique8934"
+            storeFile file('uniquetrackKeystore')
+            storePassword "unique8934"
+        }
+    }
     compileSdk 32
 
     defaultConfig {
         applicationId "org.techtown.unique_track"
-        minSdk 19
+        minSdk 24
         targetSdk 32
-        versionCode 1
+        versionCode 4
         versionName "1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -21,8 +30,10 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            //debuggable true
         }
     }
     compileOptions {
@@ -50,6 +61,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx:20.0.5'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation 'com.google.firebase:firebase-storage'
+    implementation 'com.google.firebase:firebase-database:20.0.5'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

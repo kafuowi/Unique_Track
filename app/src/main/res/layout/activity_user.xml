@@ -59,7 +59,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logout_button"
-        app:layout_constraintVertical_bias="0.085" />
+        app:layout_constraintVertical_bias="0.047" />
 
     <Button
         android:id="@+id/logout_button"
@@ -71,10 +71,9 @@
         app:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.672" />
+        app:layout_constraintTop_toBottomOf="@+id/email_verified"
+        app:layout_constraintVertical_bias="0.131" />
 
     <TextView
         android:id="@+id/userName_info"
@@ -86,8 +85,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.386"
         app:layout_constraintStart_toEndOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@+id/user_photo"
-        app:layout_constraintVertical_bias="0.108" />
+        app:layout_constraintTop_toBottomOf="@+id/picEdit_button"
+        app:layout_constraintVertical_bias="0.117" />
 
     <View
         android:id="@+id/divider"
@@ -163,7 +162,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.081"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_photo"
+        app:layout_constraintTop_toBottomOf="@+id/picEdit_button"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
@@ -213,18 +212,46 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/changepwd_button"
-        app:layout_constraintVertical_bias="0.123" />
+        app:layout_constraintVertical_bias="0.06" />
 
     <ImageView
         android:id="@+id/user_photo"
-        android:layout_width="95dp"
-        android:layout_height="92dp"
-        android:layout_marginTop="40dp"
-        android:background="@color/gray"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="28dp"
+        android:background="@color/lightgray"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
         app:srcCompat="@drawable/ic_launcher_foreground" />
+
+    <Button
+        android:id="@+id/picEdit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/gray"
+        android:text="Edit Image"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        app:backgroundTint="@color/gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_photo" />
+
+    <Button
+        android:id="@+id/nameEdit_button"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/edit2"
+        android:text=" "
+        android:textSize="12sp"
+        app:backgroundTint="@color/gray"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/picEdit_button"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

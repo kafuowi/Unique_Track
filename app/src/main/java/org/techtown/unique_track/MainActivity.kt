@@ -1,11 +1,13 @@
 package org.techtown.unique_track
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_main.*
 
 //현재 사용자의 uid 전역변수로 선언
 var uid:String?=null
@@ -41,6 +43,12 @@ class MainActivity : AppCompatActivity() {
         val newItem_button = findViewById<Button>(R.id.itemregister_button)
         newItem_button.setOnClickListener {
             startActivity(Intent(this@MainActivity,NewNFCActivity::class.java))
+        }
+
+        personalInfo.setOnClickListener {
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse("https://kafuowi.github.io/UT_terms_of_service/")
+            startActivity(i)
         }
     }
 }
