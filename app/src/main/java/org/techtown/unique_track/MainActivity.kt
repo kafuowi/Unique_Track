@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
@@ -43,6 +44,10 @@ class MainActivity : AppCompatActivity() {
         val newItem_button = findViewById<Button>(R.id.itemregister_button)
         newItem_button.setOnClickListener {
             startActivity(Intent(this@MainActivity,NewNFCActivity::class.java))
+        }
+        val notification_button = findViewById<ImageButton>(R.id.noification_button)
+        notification_button.setOnClickListener {
+            startActivity(Intent(this, NotificationActivity::class.java))
         }
 
         personalInfo.setOnClickListener {

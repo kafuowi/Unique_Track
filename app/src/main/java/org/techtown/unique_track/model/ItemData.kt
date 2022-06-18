@@ -8,4 +8,5 @@ data class ItemData(
     val ownerUID:String ?= null,
     val nfcuid:String ?= null,
     val explanation:String?=null
+
 )
