@@ -12,7 +12,7 @@ import org.techtown.unique_track.model.ItemData
 import org.techtown.unique_track.R.layout.*
 
 class TransferActivity : AppCompatActivity() {
-    private var auth : FirebaseAuth? = null
+    private var auth: FirebaseAuth? = null
     private lateinit var database: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +26,8 @@ class TransferActivity : AppCompatActivity() {
 
 
 
-       database= FirebaseDatabase.getInstance().getReference("Products")
-        database.addValueEventListener(object: ValueEventListener {
+        database = FirebaseDatabase.getInstance().getReference("Products")
+        database.addValueEventListener(object : ValueEventListener {
             // snapshot : get database(products)
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
@@ -36,8 +36,8 @@ class TransferActivity : AppCompatActivity() {
 
                         if (intent!!.getStringExtra("productName") == item_list!!.productName)
                             productName.setText(item_list!!.productName)
-                            senderUID.setText(intent!!.getStringExtra("senderUID"))
-                            Glide.with(applicationContext).load(item_list!!.image).into(productImage)
+                        senderUID.setText(intent!!.getStringExtra("senderUID"))
+                        Glide.with(applicationContext).load(item_list!!.image).into(productImage)
 
                     }
                 }
@@ -49,8 +49,8 @@ class TransferActivity : AppCompatActivity() {
             }
         })
         transferButton.setOnClickListener {
-            if(checkBox.isChecked) {
-                database.addValueEventListener(object: ValueEventListener {
+            if (checkBox.isChecked) {
+                database.addValueEventListener(object : ValueEventListener {
                     // snapshot : get database(products)
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
@@ -58,11 +58,20 @@ class TransferActivity : AppCompatActivity() {
                                 var item_list = itemSnapshot.getValue(ItemData::class.java)
                                 var imageString = item_list?.image
 
-                                if (intent!!.getStringExtra("senderUID") == item_list!!.ownerUID){
-                                    var newitem = ItemData(item_list.productName,item_list.registerDate,item_list.image,uid,item_list.nfcuid,item_list.explanation)
+                                if (intent!!.getStringExtra("senderUID") == item_list!!.ownerUID) {
+                                    var newitem = ItemData(
+                                        item_list.productName,
+                                        item_list.registerDate,
+                                        item_list.image,
+                                        uid,
+                                        item_list.nfcuid,
+                                        item_list.explanation
+                                    )
                                     database.child(item_list?.nfcuid!!).setValue(newitem)
                                     //Toast.makeText(this@TransferActivity,item_list.image,Toast.LENGTH_SHORT).show()
-                                    database.parent!!.child("Alerts").child(intent.getStringExtra("transfercode").toString()).removeValue()
+                                    database.parent!!.child("Alerts")
+                                        .child(intent.getStringExtra("transfercode").toString())
+                                        .removeValue()
                                     finish()
                                 }
                             }
