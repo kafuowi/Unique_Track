@@ -107,7 +107,6 @@ class ItemShowActivity : AppCompatActivity() {
                                 var username = tempuser?.username!!
 
                                 OwnerNameText.append(username)
-                                InformationText.append("OwnerName: "+username+"\n")
                             }
                         }
 
@@ -125,11 +124,6 @@ class ItemShowActivity : AppCompatActivity() {
                     NFCuidText.append(item?.nfcuid)
                     ExplanationText.append(item?.explanation)
                     OwnerUIDText.append(item?.ownerUID)
-                    InformationText.append("ProductName: " + item?.productName + "\n")
-                    InformationText.append("RegisterDate: " + item?.registerDate + "\n")
-                    InformationText.append("NFCuid: " + item?.nfcuid + "\n")
-                    InformationText.append("Explanation: " + item?.explanation + "\n")
-                    InformationText.append("OwnerUID: " + item?.ownerUID + "\n")
                     val imageView = findViewById<ImageView>(R.id.editItemImage)
                     // Create a storage reference from our app
                     val storageRef = FirebaseStorage.getInstance().reference
