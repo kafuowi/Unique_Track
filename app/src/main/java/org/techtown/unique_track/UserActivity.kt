@@ -166,9 +166,19 @@ class UserActivity : AppCompatActivity() {
                 Toast.makeText(this, task.exception.toString(), Toast.LENGTH_LONG).show()
 
             }
+
+
         }
     }
+    //비밀번호 변경
+    fun changePassword(password:String){
+        FirebaseAuth.getInstance().currentUser!!.updatePassword(password).addOnCompleteListener { task ->
+            if(task.isSuccessful){
+                Toast.makeText(this, "비밀번호가 변경되었습니다.", Toast.LENGTH_LONG).show()
+            }else{
+                Toast.makeText(this, task.exception.toString(), Toast.LENGTH_LONG).show()
 
+            }
     // 이메일 전송 비밀번호 변경
     fun sendPasswordReset(){
         val user= Firebase.auth.currentUser
@@ -273,5 +283,106 @@ class UserActivity : AppCompatActivity() {
         val clipboardManager = getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
         val clipData = ClipData.newPlainText("label", text)
         clipboardManager.setPrimaryClip(clipData)
+    }
+
+    // 이메일 전송 비밀번호 변경
+    fun sendPasswordReset(){
+        val user= Firebase.auth.currentUser
+        val emailAddress=user!!.email
+
+        Firebase.auth.sendPasswordResetEmail(emailAddress.toString())
+            .addOnCompleteListener{ task ->
+                if(task.isSuccessful){
+                    Toast.makeText(this,"이메일 전송",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(this,"실패",Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    //프로필 이름 변경, user창에 출력
+    fun changeUserName(name:String){
+        //DB에 이름 저장
+        val user=Firebase.auth.currentUser
+        val profileUpdates= userProfileChangeRequest {
+            displayName=name
+        }
+        user!!.updateProfile(profileUpdates)
+            .addOnCompleteListener{ task ->
+                if(task.isSuccessful){
+                    //바뀐 이름 바로 user창에 보이게
+                    user?.let{
+                        val name=user.displayName
+                        val user_name=findViewById<TextView>(R.id.userName_info)
+                        user_name.setText(name)
+                    }
+                    Toast.makeText(this,"Profile Image update",Toast.LENGTH_SHORT).show()
+                    //Get current user uid
+                    val currentUser = Firebase.auth.currentUser
+                    uid = currentUser?.uid
+                    val notNullableID : String = uid!!
+                    //Store user information in database
+                    database = Firebase.database.reference
+                    val username = user.displayName
+                    val email = user.email
+                    val user = User(username, email)
+                    database.child("Owners").child(notNullableID).setValue(user)
+                }
+            }
+    }
+
+    //갤러리에서 사진 - 요청
+    private fun openGallery(){
+        val intent = Intent()
+        intent.type="image/*"
+        intent.action=Intent.ACTION_GET_CONTENT
+        startActivityForResult(intent,REQ_SELECT_IMG)
+    }
+    //갤러리 사진 - 결과
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode== Activity.RESULT_OK){
+            when(requestCode){
+                REQ_SELECT_IMG->{
+                    data?:return
+                    val uri=data.data as Uri
+                    updateProfileImg(uri)   //이미지 DB에 저장
+                    setImgUri(uri)          //이미지 화면에 출력
+                }
+            }
+        }else{
+            Toast.makeText(this,"사진을 불러오지 못했습니다.",Toast.LENGTH_SHORT).show()
+        }
+    }
+    //Uri이용한 이미지 셋
+    private fun setImgUri(imgUri:Uri){
+        val profileImg=findViewById<ImageView>(R.id.user_photo)
+        imgUri.let{
+            val bitmap: Bitmap
+            if(Build.VERSION.SDK_INT<28){
+                bitmap= MediaStore.Images.Media.getBitmap(
+                    this.contentResolver,
+                    imgUri
+                )
+                profileImg.setImageBitmap(bitmap)
+            }else{
+                val source= ImageDecoder.createSource(this.contentResolver,imgUri)
+                bitmap=ImageDecoder.decodeBitmap(source)
+                profileImg.setImageBitmap(bitmap)
+            }
+        }
+    }
+    //프로필 이미지 DB에 업로드
+    private fun updateProfileImg(pic_uri:Uri){
+        val user=Firebase.auth.currentUser
+        val profileUpdates= userProfileChangeRequest {
+            photoUri=pic_uri
+        }
+        user!!.updateProfile(profileUpdates)
+            .addOnCompleteListener{ task ->
+                if(task.isSuccessful){
+                    Toast.makeText(this,"Profile Image update",Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 }

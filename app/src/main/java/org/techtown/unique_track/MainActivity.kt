@@ -49,7 +49,6 @@ class MainActivity : AppCompatActivity() {
         notification_button.setOnClickListener {
             startActivity(Intent(this, NotificationActivity::class.java))
         }
-
         personalInfo.setOnClickListener {
             val i = Intent(Intent.ACTION_VIEW)
             i.data = Uri.parse("https://kafuowi.github.io/UT_terms_of_service/")

@@ -9,9 +9,9 @@ android {
     signingConfigs {
         release {
             keyAlias "key0"
-            keyPassword "jade0416!"
-            storeFile file('/Users/choejihun/Developer/UniqueTrack.jks')
-            storePassword "jade0416!"
+            keyPassword "unique8934"
+            storeFile file('uniquetrackKeystore')
+            storePassword "unique8934"
         }
     }
     compileSdk 32

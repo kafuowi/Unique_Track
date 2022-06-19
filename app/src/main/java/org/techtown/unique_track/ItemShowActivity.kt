@@ -35,13 +35,11 @@ class ItemShowActivity : AppCompatActivity() {
     private var auth : FirebaseAuth? = null
     private lateinit var database: DatabaseReference
     private lateinit var databaseA: DatabaseReference
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_iteminfo)
         auth = Firebase.auth
-
 
         //home버튼 -> main창으로
         val home_button5 =findViewById<Button>(R.id.home_button5)
@@ -60,6 +58,7 @@ class ItemShowActivity : AppCompatActivity() {
         var NFCuid = getIntent().getStringExtra("NFCuid")
         var notNullableNFCuid : String = NFCuid!!
 
+        database = FirebaseDatabase.getInstance().getReference()
         databaseA = FirebaseDatabase.getInstance().reference
         loadItemData(NFCuid)
     }
@@ -98,7 +97,6 @@ class ItemShowActivity : AppCompatActivity() {
                     else{
                         itemEditButton.visibility = View.GONE
                     }
-
                     var databaseuser = FirebaseDatabase.getInstance().getReference("Owners").child(item?.ownerUID!!)
                     databaseuser.addValueEventListener(object:ValueEventListener{
                         // snapshot : get database(products)
@@ -108,6 +106,7 @@ class ItemShowActivity : AppCompatActivity() {
                                 val tempuser=snapshot.getValue(User::class.java)
                                 var username = tempuser?.username!!
 
+                                OwnerNameText.append(username)
                                 InformationText.append("OwnerName: "+username+"\n")
                             }
                         }
@@ -121,6 +120,11 @@ class ItemShowActivity : AppCompatActivity() {
                     //owner 이름 가져오기
 
                 // 현재 사용자의 uid와 firebase의 item_list의 ownerUID가 같을때만 myDataset에 데이터 추가
+                    ProductNameText.append(item?.productName)
+                    RegisterDateText.append(item?.registerDate)
+                    NFCuidText.append(item?.nfcuid)
+                    ExplanationText.append(item?.explanation)
+                    OwnerUIDText.append(item?.ownerUID)
                     InformationText.append("ProductName: " + item?.productName + "\n")
                     InformationText.append("RegisterDate: " + item?.registerDate + "\n")
                     InformationText.append("NFCuid: " + item?.nfcuid + "\n")
@@ -157,7 +161,6 @@ class ItemShowActivity : AppCompatActivity() {
         })
 
     }
-
     fun createAlert(productName : String?, nfcuid : String?, ownerID : String?, recieverID : String?){
         val transfercode = ownerID +"_"+ recieverID +"_"+ nfcuid
         var alert = NotificationData(productName, nfcuid, ownerID, recieverID, transfercode )
