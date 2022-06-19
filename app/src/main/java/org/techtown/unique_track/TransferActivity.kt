@@ -1,6 +1,8 @@
 package org.techtown.unique_track
 
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -42,7 +44,8 @@ class TransferActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                Log.w(ContentValues.TAG, "loadPost:onCancelled", error.toException())
+
             }
         })
         transferButton.setOnClickListener {
@@ -60,13 +63,14 @@ class TransferActivity : AppCompatActivity() {
                                     database.child(item_list?.nfcuid!!).setValue(newitem)
                                     //Toast.makeText(this@TransferActivity,item_list.image,Toast.LENGTH_SHORT).show()
                                     database.parent!!.child("Alerts").child(intent.getStringExtra("transfercode").toString()).removeValue()
+                                    finish()
                                 }
                             }
                         }
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
+                        Log.w(ContentValues.TAG, "loadPost:onCancelled", error.toException())
                     }
                 })
             }

@@ -1,6 +1,8 @@
 package org.techtown.unique_track
 
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,7 +44,8 @@ class NotificationActivity  : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                Log.w(ContentValues.TAG, "loadPost:onCancelled", error.toException())
+
             }
 
         })
