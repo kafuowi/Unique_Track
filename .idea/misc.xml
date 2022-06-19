@@ -3,15 +3,27 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+<<<<<<< HEAD
         <entry key="..\:/Users/LG/Git/Unique_Track/app/src/main/res/drawable/img_border.xml" value="0.1255" />
+        <entry key="..\:/Users/LG/Git/Unique_Track/app/src/main/res/layout/activity_detail.xml" value="0.264" />
+=======
+>>>>>>> c9b62b1136a807b4560b35360ae9ae662b39b494
         <entry key="..\:/Users/LG/Git/Unique_Track/app/src/main/res/layout/activity_join.xml" value="0.1" />
-        <entry key="..\:/Users/LG/Git/Unique_Track/app/src/main/res/layout/activity_list.xml" value="0.264" />
-        <entry key="..\:/Users/LG/Git/Unique_Track/app/src/main/res/layout/activity_list2.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/LG/Git/Unique_Track/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Users/LG/Git/Unique_Track/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/LG/Git/Unique_Track/app/src/main/res/layout/activity_user.xml" value="0.12771739130434784" />
         <entry key="..\:/Users/LG/Git/Unique_Track/app/src/main/res/layout/first.xml" value="0.1" />
-        <entry key="..\:/Users/LG/Git/Unique_Track/app/src/main/res/layout/item.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/ic_baseline_nfc_24.xml" value="0.225" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.155" />
+        <entry key="app/src/main/res/layout/activity_join.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.13247213779128672" />
+        <entry key="app/src/main/res/layout/activity_new_item.xml" value="0.21822916666666667" />
+        <entry key="app/src/main/res/layout/activity_new_nfc.xml" value="0.21822916666666667" />
+        <entry key="app/src/main/res/layout/activity_nfc.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/activity_user.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/first.xml" value="0.15070921985815602" />
       </map>
     </option>
   </component>

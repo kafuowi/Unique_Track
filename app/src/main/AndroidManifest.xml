@@ -91,6 +91,12 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TransferActivity"
+            android:exported="false" />
+        <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity android:name=".MainActivity" />

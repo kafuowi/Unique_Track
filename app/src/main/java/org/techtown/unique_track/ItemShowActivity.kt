@@ -1,6 +1,7 @@
 package org.techtown.unique_track
 
 import android.content.ContentValues
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -8,9 +9,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnFailureListener
@@ -24,13 +27,14 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_iteminfo.*
 import org.techtown.unique_track.adapter.MyAdapter
 import org.techtown.unique_track.model.ItemData
+import org.techtown.unique_track.model.NotificationData
 import org.techtown.unique_track.model.User
 import java.lang.Exception
 
 class ItemShowActivity : AppCompatActivity() {
     private var auth : FirebaseAuth? = null
     private lateinit var database: DatabaseReference
-
+    private lateinit var databaseA: DatabaseReference
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,10 +59,16 @@ class ItemShowActivity : AppCompatActivity() {
         var notNullableNFCuid : String = NFCuid!!
 
         database = FirebaseDatabase.getInstance().getReference()
+        databaseA = FirebaseDatabase.getInstance().reference
         loadItemData(NFCuid)
     }
 
     private fun loadItemData(NFCid: String){
+
+        var builder = AlertDialog.Builder(this)//양도 알림창
+
+        var editText = EditText(this)
+        var transfer_button = findViewById<Button>(R.id.transferbutton)
         database= FirebaseDatabase.getInstance().getReference("Products").child(NFCid)    // 가져오려는 data가 있는 firebase path
 
         database.addValueEventListener(object:ValueEventListener{
@@ -66,6 +76,12 @@ class ItemShowActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
                     val item=snapshot.getValue(ItemData::class.java)
+                    builder.setTitle("Transfer").setMessage("양도 받을 사람의 UID 입력").setView(editText)
+                    builder.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
+                        createAlert(item?.productName, item?.nfcuid, item?.ownerUID, editText.text.toString())
+                    })
+                    builder.setNegativeButton("취소", null)
+
                     if(item?.ownerUID == auth!!.uid) {
                         itemEditButton.setOnClickListener {
                             val newintent = Intent(this@ItemShowActivity, NewItemActivity::class.java)
@@ -73,6 +89,9 @@ class ItemShowActivity : AppCompatActivity() {
                             newintent.putExtra("editTrue", true)
                             startActivity(newintent)
                             finish()
+                        }
+                        transfer_button.setOnClickListener {
+                            builder.show()
                         }
                     }
                     else{
@@ -88,6 +107,7 @@ class ItemShowActivity : AppCompatActivity() {
                                 var username = tempuser?.username!!
 
                                 OwnerNameText.append(username)
+                                InformationText.append("OwnerName: "+username+"\n")
                             }
                         }
 
@@ -105,6 +125,11 @@ class ItemShowActivity : AppCompatActivity() {
                     NFCuidText.append(item?.nfcuid)
                     ExplanationText.append(item?.explanation)
                     OwnerUIDText.append(item?.ownerUID)
+                    InformationText.append("ProductName: " + item?.productName + "\n")
+                    InformationText.append("RegisterDate: " + item?.registerDate + "\n")
+                    InformationText.append("NFCuid: " + item?.nfcuid + "\n")
+                    InformationText.append("Explanation: " + item?.explanation + "\n")
+                    InformationText.append("OwnerUID: " + item?.ownerUID + "\n")
                     val imageView = findViewById<ImageView>(R.id.editItemImage)
                     // Create a storage reference from our app
                     val storageRef = FirebaseStorage.getInstance().reference
@@ -135,5 +160,12 @@ class ItemShowActivity : AppCompatActivity() {
 
         })
 
+    }
+    fun createAlert(productName : String?, nfcuid : String?, ownerID : String?, recieverID : String?){
+        val transfercode = ownerID +"_"+ recieverID +"_"+ nfcuid
+        var alert = NotificationData(productName, nfcuid, ownerID, recieverID, transfercode )
+        val completed = databaseA.child("Alerts").child(transfercode).setValue(alert).isSuccessful
+        Toast.makeText(this, "알림 생성 완료", Toast.LENGTH_SHORT).show()
+        finish()
     }
 }

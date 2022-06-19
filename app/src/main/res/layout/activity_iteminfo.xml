@@ -157,6 +157,7 @@
         android:id="@+id/editItemImage"
         android:layout_width="341dp"
         android:layout_height="233dp"
+
         android:layout_marginTop="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -208,4 +209,21 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toEndOf="@+id/textView26"
         app:layout_constraintTop_toBottomOf="@+id/OwnerUIDText" />
+
+        android:text="@string/edit_item"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.835"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/InformationText" />
+
+    <Button
+        android:id="@+id/transferbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/transfer_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.201"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/InformationText" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
