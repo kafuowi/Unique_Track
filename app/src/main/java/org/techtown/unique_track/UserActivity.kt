@@ -2,6 +2,9 @@ package org.techtown.unique_track
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -49,6 +52,11 @@ class UserActivity : AppCompatActivity() {
         val editPicbutton=findViewById<Button>(R.id.picEdit_button)
         editPicbutton.setOnClickListener {
             openGallery()
+        }
+
+        uid_info.setOnClickListener {
+            copyToClipboard(uid_info.text.toString())
+            Toast.makeText(applicationContext,"UID 복사완료",Toast.LENGTH_SHORT).show()
         }
 
         //이름 수정
@@ -260,5 +268,10 @@ class UserActivity : AppCompatActivity() {
                     Toast.makeText(this,"Profile Image update",Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+    fun Context.copyToClipboard(text: String) {
+        val clipboardManager = getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData = ClipData.newPlainText("label", text)
+        clipboardManager.setPrimaryClip(clipData)
     }
 }
