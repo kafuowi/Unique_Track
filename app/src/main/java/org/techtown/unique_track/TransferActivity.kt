@@ -59,7 +59,7 @@ class TransferActivity : AppCompatActivity() {
                                     var newitem = ItemData(item_list.productName,item_list.registerDate,item_list.image,uid,item_list.nfcuid,item_list.explanation)
                                     database.child(item_list?.nfcuid!!).setValue(newitem)
                                     //Toast.makeText(this@TransferActivity,item_list.image,Toast.LENGTH_SHORT).show()
-                                    database.parent!!.child("Alerts").child(intent.getStringExtra("key").toString()).removeValue()
+                                    database.parent!!.child("Alerts").child(intent.getStringExtra("transfercode").toString()).removeValue()
                                 }
                             }
                         }

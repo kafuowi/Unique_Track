@@ -159,8 +159,9 @@ class ItemShowActivity : AppCompatActivity() {
     }
 
     fun createAlert(productName : String?, nfcuid : String?, ownerID : String?, recieverID : String?){
-        var alert = NotificationData(productName, nfcuid, ownerID, recieverID)
-        val completed = databaseA.child("Alerts").child(ownerID +"_"+ recieverID +"_"+ nfcuid).setValue(alert).isSuccessful
+        val transfercode = ownerID +"_"+ recieverID +"_"+ nfcuid
+        var alert = NotificationData(productName, nfcuid, ownerID, recieverID, transfercode )
+        val completed = databaseA.child("Alerts").child(transfercode).setValue(alert).isSuccessful
         Toast.makeText(this, "알림 생성 완료", Toast.LENGTH_SHORT).show()
         finish()
     }

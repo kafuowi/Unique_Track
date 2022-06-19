@@ -39,6 +39,7 @@ class NotificationAdapter (private val dataset: ArrayList<NotificationData>) : R
             val otherIntent = Intent(holder.itemView.context, TransferActivity::class.java)
             otherIntent.putExtra("senderUID", item.senderUID)
             otherIntent.putExtra("productName", item.productName)
+            otherIntent.putExtra("transfercode",item.transfercode)
             //otherIntent.putExtra("key", item.alertName)
 
             startActivity(holder.itemView.context, otherIntent, Bundle())
